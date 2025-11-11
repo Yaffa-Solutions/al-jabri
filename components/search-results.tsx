@@ -8,7 +8,7 @@ import { Star, MapPin, Wifi, Coffee, Dumbbell, ArrowLeft } from "lucide-react"
 import { useI18n } from "@/lib/i18n-context"
 
 export function SearchResults() {
-  const { locale } = useI18n()
+  const { locale, t } = useI18n()
   const [searchData, setSearchData] = useState<any>(null)
 
   useEffect(() => {
@@ -22,9 +22,9 @@ export function SearchResults() {
     return (
       <div className="min-h-[calc(100vh-64px)] flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-[#324557] mb-4">No search results found</h2>
+          <h2 className="text-2xl font-bold text-[#324557] mb-4">{t("No search results found")}</h2>
           <Link href="/booking">
-            <Button className="bg-[#B99B75] hover:bg-[#CEB89E] text-white">Start New Search</Button>
+            <Button className="bg-[#B99B75] hover:bg-[#CEB89E] text-white">{t("Start New Search")}</Button>
           </Link>
         </div>
       </div>
@@ -40,28 +40,30 @@ export function SearchResults() {
           <Link href="/booking">
             <Button variant="ghost" className="text-[#324557] hover:text-[#B99B75] gap-2">
               <ArrowLeft className="w-4 h-4" />
-              Back to Search
+              {t("Back to Search")}
             </Button>
           </Link>
         </div>
 
         <div className="bg-white rounded-lg p-6 mb-8 shadow-md">
-          <h1 className="text-3xl font-bold text-[#324557] mb-4">Search Results</h1>
+          <h1 className="text-3xl font-bold text-[#324557] mb-4">{t("Search Results")}</h1>
           <div className="flex flex-wrap gap-4 text-sm text-[#5F83A4]">
             <div>
-              <span className="font-semibold">Location:</span> {searchParams.destination}
+              <span className="font-semibold">{t("Location")}:</span> {searchParams.destination || t("All locations")}
             </div>
             <div>
-              <span className="font-semibold">Check-in:</span> {searchParams.checkIn}
+              <span className="font-semibold">{t("Check-in")}:</span> {searchParams.checkIn}
             </div>
             <div>
-              <span className="font-semibold">Check-out:</span> {searchParams.checkOut}
+              <span className="font-semibold">{t("Check-out")}:</span> {searchParams.checkOut}
             </div>
             <div>
-              <span className="font-semibold">Guests:</span> {searchParams.guests}
+              <span className="font-semibold">{t("Guests")}:</span> {searchParams.guests}
             </div>
           </div>
-          <p className="mt-4 text-[#324557] font-semibold">Found {hotels.length} available hotels</p>
+          <p className="mt-4 text-[#324557] font-semibold">
+            {t("Found")} {hotels.length} {t("available hotels")}
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -77,7 +79,7 @@ export function SearchResults() {
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4 bg-[#B99B75] text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  ${hotel.price}/night
+                  ${hotel.price}/{t("night")}
                 </div>
               </div>
 
@@ -92,7 +94,9 @@ export function SearchResults() {
                 <div className="flex items-center gap-1 mb-4">
                   <Star className="w-4 h-4 fill-[#B99B75] text-[#B99B75]" />
                   <span className="font-semibold text-[#324557]">{hotel.rating}</span>
-                  <span className="text-sm text-[#5F83A4]">({hotel.reviews} reviews)</span>
+                  <span className="text-sm text-[#5F83A4]">
+                    ({hotel.reviews} {t("reviews")})
+                  </span>
                 </div>
 
                 <div className="flex gap-3 text-[#5F83A4]">
@@ -103,8 +107,13 @@ export function SearchResults() {
               </CardContent>
 
               <CardFooter className="p-6 pt-0">
-                <Link href={`/booking?hotelId=${hotel.id}`} className="w-full">
-                  <Button className="w-full bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">Book Now</Button>
+                <Link
+                  href={`/booking?hotelId=${hotel.id}&checkIn=${searchParams.checkIn}&checkOut=${searchParams.checkOut}&guests=${searchParams.guests}`}
+                  className="w-full"
+                >
+                  <Button className="w-full bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">
+                    {t("Book Now")}
+                  </Button>
                 </Link>
               </CardFooter>
             </Card>
