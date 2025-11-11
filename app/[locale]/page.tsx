@@ -1,27 +1,23 @@
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import { SearchBar } from "@/components/search-bar"
-import { AboutUs } from "@/components/about-us"
 import { FeaturedHotels } from "@/components/featured-hotels"
+import { AboutUs } from "@/components/about-us"
 import { Features } from "@/components/features"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <HeroSection />
-      <SearchBar />
-      <div id="about">
-        <AboutUs />
-      </div>
-      <div id="hotels">
+      <main className="flex-1">
+        <HeroSection />
+        <SearchBar />
         <FeaturedHotels />
-      </div>
-      <div id="services">
+        <AboutUs />
         <Features />
-      </div>
+      </main>
       <Footer />
-    </main>
+    </div>
   )
 }

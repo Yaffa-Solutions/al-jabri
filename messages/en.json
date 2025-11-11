@@ -1,0 +1,190 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "blogs": "Blogs",
+    "contact": "Get in Touch",
+    "login": "Login",
+    "languageSwitch": "عربي"
+  },
+  "hero": {
+    "title": "Discover Luxury Hospitality in Saudi Arabia",
+    "subtitle": "Experience world-class hotel management services tailored to the Kingdom's finest accommodations",
+    "bookNow": "Start Booking Your Stay Now",
+    "learnMore": "Discover The Secrets Of The Perfect Stay"
+  },
+  "search": {
+    "destination": "Where to?",
+    "destinationPlaceholder": "Enter destination",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "searchButton": "Search Hotels"
+  },
+  "featured": {
+    "title": "Featured Hotels",
+    "subtitle": "Discover our premium selection of hotels",
+    "perNight": "per night",
+    "viewDetails": "View Details",
+    "bookNow": "Book Now"
+  },
+  "aboutUs": {
+    "title": "ABOUT US",
+    "titleAr": "من نحن",
+    "description": "A specialized company in operating and managing hotels in Saudi Arabia, dedicated to providing exceptional hospitality services that meet the aspirations of visitors to Kingdom. With the extensive experience of our management team in the hospitality sector, we ensure a comfortable and distinguished stay that reflects the highest standards of quality and professionalism.",
+    "descriptionAr": "شركة متخصصة في تشغيل وإدارة الفنادق في المملكة العربية السعودية، حيث نعمل على تقديم خدمات ضيافة مميزة ترتقي لتطلعات زوار المملكة. بفضل خبرة إداربنا الطويلة في قطاع الضيافة، نضمن تجربة إقامة مريحة ومتميزة تعكس أعلى معايير الجودة والاحترافية."
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "subtitle": "Excellence in every detail",
+    "qualityService": {
+      "title": "Quality Service",
+      "description": "Premium hospitality experiences"
+    },
+    "expertTeam": {
+      "title": "Expert Team",
+      "description": "Professional management staff"
+    },
+    "modernFacilities": {
+      "title": "Modern Facilities",
+      "description": "State-of-the-art amenities"
+    },
+    "support": {
+      "title": "24/7 Support",
+      "description": "Always here to help"
+    }
+  },
+  "footer": {
+    "description": "Specialized in hotel operations and management across Saudi Arabia",
+    "quickLinks": "Quick Links",
+    "aboutUs": "About Us",
+    "perfectStay": "Perfect Stay Guide",
+    "blogs": "Blogs",
+    "careers": "Careers",
+    "support": "Support",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "help": "Help Center",
+    "newsletter": "Newsletter",
+    "newsletterText": "Subscribe to get updates and offers",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "rights": "All rights reserved."
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Login to your account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "orContinue": "Or continue with"
+  },
+  "about": {
+    "title": "About Our Company",
+    "mission": "Our Mission",
+    "missionText": "To provide exceptional hotel management services that exceed expectations and deliver unforgettable experiences to every guest.",
+    "vision": "Our Vision",
+    "visionText": "To be the leading hotel management company in Saudi Arabia, recognized for excellence, innovation, and exceptional service.",
+    "values": "Our Values",
+    "excellence": "Excellence",
+    "excellenceText": "We strive for excellence in every aspect of our service",
+    "integrity": "Integrity",
+    "integrityText": "We conduct business with honesty and transparency",
+    "innovation": "Innovation",
+    "innovationText": "We embrace innovation to improve guest experiences",
+    "hospitality": "Hospitality",
+    "hospitalityText": "We deliver warm and genuine hospitality"
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "We'd love to hear from you",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "subject": "Subject",
+    "subjectPlaceholder": "What is this about?",
+    "message": "Message",
+    "messagePlaceholder": "Your message here...",
+    "sendButton": "Send Message",
+    "contactInfo": "Contact Information",
+    "address": "Address",
+    "addressText": "Riyadh, Saudi Arabia",
+    "phone": "Phone",
+    "phoneText": "+966 XX XXX XXXX",
+    "emailLabel": "Email",
+    "emailText": "info@hotelsmanagement.com"
+  },
+  "blogs": {
+    "title": "Latest Blogs",
+    "subtitle": "Stay updated with our latest news and insights",
+    "readMore": "Read More",
+    "postedOn": "Posted on",
+    "categories": "Categories",
+    "allCategories": "All Categories",
+    "travel": "Travel",
+    "hospitality": "Hospitality",
+    "tips": "Tips",
+    "news": "News"
+  },
+  "booking": {
+    "title": "Start Booking Your Stay Now",
+    "subtitle": "Book your perfect accommodation with ease",
+    "hotelName": "Hotel Name",
+    "hotelPlaceholder": "Select a hotel",
+    "checkIn": "Check-in Date",
+    "checkOut": "Check-out Date",
+    "guests": "Number of Guests",
+    "roomType": "Room Type",
+    "standard": "Standard Room",
+    "deluxe": "Deluxe Room",
+    "suite": "Suite",
+    "specialRequests": "Special Requests",
+    "specialPlaceholder": "Any special requirements?",
+    "fullName": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "phone": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "bookButton": "Complete Booking",
+    "summary": "Booking Summary",
+    "hotel": "Hotel",
+    "dates": "Dates",
+    "totalGuests": "Total Guests",
+    "room": "Room Type",
+    "totalPrice": "Total Price"
+  },
+  "secrets": {
+    "title": "Discover The Secrets Of The Perfect Stay",
+    "subtitle": "Expert tips and insights for unforgettable hotel experiences",
+    "intro": "Welcome to our comprehensive guide on achieving the perfect hotel stay. Whether you're a seasoned traveler or planning your first luxury getaway, these secrets will transform your hospitality experience.",
+    "choosingTitle": "Choosing the Right Hotel",
+    "choosingText": "Selecting the perfect hotel is the foundation of a great stay. Consider location, amenities, reviews, and your specific needs to make an informed decision.",
+    "bookingTitle": "Best Booking Practices",
+    "bookingText": "Book directly with hotels for better rates and perks, be flexible with dates, and don't hesitate to reach out with special requests before arrival.",
+    "arrivalTitle": "Arrival Excellence",
+    "arrivalText": "Arrive with a positive attitude, communicate your preferences clearly, and take advantage of early check-in or late check-out options when available.",
+    "stayTitle": "During Your Stay",
+    "stayText": "Explore hotel amenities, maintain communication with staff, respect hotel policies, and don't miss out on local recommendations from concierge services.",
+    "comfortTitle": "Maximizing Comfort",
+    "comfortText": "Adjust room temperature and lighting to your preference, utilize room service thoughtfully, and maintain your daily routines for optimal comfort.",
+    "serviceTitle": "Getting the Best Service",
+    "serviceText": "Be courteous to staff, communicate needs promptly, provide feedback constructively, and show appreciation for excellent service.",
+    "expertTips": "Expert Tips",
+    "tip1": "Join hotel loyalty programs for exclusive benefits",
+    "tip2": "Pack a small first aid kit and essential toiletries",
+    "tip3": "Research local attractions and restaurants in advance",
+    "tip4": "Keep important documents and valuables secure",
+    "tip5": "Take photos of your room upon arrival for reference",
+    "tip6": "Set up do-not-disturb times for uninterrupted rest",
+    "conclusion": "Perfect Conclusion",
+    "conclusionText": "A perfect stay is about more than just a beautiful room—it's about creating memorable experiences, building relationships with staff, and fully embracing the hospitality culture. Follow these secrets to transform every hotel stay into an extraordinary journey."
+  }
+}

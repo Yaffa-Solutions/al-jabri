@@ -1,16 +1,68 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
-import { Calendar, MapPin, Users, Search } from "lucide-react"
+import { Calendar, MapPin, Users, Search, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 export function SearchBar() {
+  const router = useRouter()
   const [location, setLocation] = useState("")
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
   const [guests, setGuests] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSearch = async () => {
+    if (!location || !checkIn || !checkOut) {
+      toast.error("Missing information", {
+        description: "Please fill in location and dates",
+      })
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      const queryParams = new URLSearchParams({
+        destination: location,
+        checkIn,
+        checkOut,
+        guests: guests || "1",
+      })
+
+      const response = await fetch(`/api/search?${queryParams}`)
+      const data = await response.json()
+
+      if (data.success) {
+        // Store search results
+        sessionStorage.setItem("searchResults", JSON.stringify(data.data))
+
+        toast.success("Search complete!", {
+          description: `Found ${data.data.hotels.length} hotel(s)`,
+        })
+
+        // Navigate to results
+        setTimeout(() => {
+          router.push("/booking/results")
+        }, 500)
+      } else {
+        toast.error("Search failed", {
+          description: data.error || "Please try again",
+        })
+      }
+    } catch (error) {
+      console.error("[v0] Search error:", error)
+      toast.error("Connection error", {
+        description: "Please check your internet connection",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-20">
@@ -71,9 +123,22 @@ export function SearchBar() {
           </div>
 
           <div className="flex items-end lg:col-span-1">
-            <Button className="w-full bg-primary hover:bg-[#48647E] text-primary-foreground">
-              <Search className="w-4 h-4 mr-2" />
-              Search
+            <Button
+              onClick={handleSearch}
+              className="w-full bg-primary hover:bg-[#48647E] text-primary-foreground"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Searching...
+                </>
+              ) : (
+                <>
+                  <Search className="w-4 h-4 mr-2" />
+                  Search
+                </>
+              )}
             </Button>
           </div>
         </div>
