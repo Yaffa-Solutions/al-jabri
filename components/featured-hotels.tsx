@@ -1,15 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useTranslations, useLocale } from "next-intl"
-import { Link } from "@/i18n/routing"
+import Link from "next/link"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Star, MapPin, Loader2 } from "lucide-react"
+import { useI18n } from "@/lib/i18n-context"
 
 export function FeaturedHotels() {
-  const t = useTranslations("featured")
-  const locale = useLocale()
+  const { t, locale } = useI18n()
   const [hotels, setHotels] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -45,8 +44,8 @@ export function FeaturedHotels() {
     <section className="py-16 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">{t("title")}</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("subtitle")}</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">{t("hotels.featured")}</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Discover our carefully selected properties</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -59,7 +58,7 @@ export function FeaturedHotels() {
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                 />
                 <div className="absolute top-4 right-4 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold">
-                  ${hotel.price}/{t("perNight")}
+                  ${hotel.price}/{t("hotels.night")}
                 </div>
               </div>
 
@@ -84,7 +83,7 @@ export function FeaturedHotels() {
               <CardFooter className="p-4 pt-0">
                 <Link href={`/booking?hotelId=${hotel.id}`} className="w-full">
                   <Button className="w-full bg-primary hover:bg-[#48647E] text-primary-foreground">
-                    {t("viewDetails")}
+                    {t("hotels.bookNow")}
                   </Button>
                 </Link>
               </CardFooter>
@@ -99,7 +98,7 @@ export function FeaturedHotels() {
               size="lg"
               className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
             >
-              {t("bookNow")}
+              {t("hotels.viewAll")}
             </Button>
           </Link>
         </div>
@@ -107,3 +106,5 @@ export function FeaturedHotels() {
     </section>
   )
 }
+
+export default FeaturedHotels

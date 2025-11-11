@@ -1,23 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { useTranslations, useLocale } from "next-intl"
-import { Link } from "@/i18n/routing"
+import Link from "next/link"
 import { Building2, Menu, X, Globe } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRouter, usePathname } from "next/navigation"
+import { useI18n } from "@/lib/i18n-context"
 
 export function Navbar() {
-  const t = useTranslations("nav")
-  const locale = useLocale()
-  const router = useRouter()
-  const pathname = usePathname()
+  const { t, locale, setLocale } = useI18n()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const switchLanguage = () => {
     const newLocale = locale === "en" ? "ar" : "en"
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`)
-    router.push(newPath)
+    setLocale(newLocale)
   }
 
   return (
@@ -33,22 +28,22 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("home")}
+              {t("nav.home")}
             </Link>
             <Link href="/about" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("about")}
+              {t("nav.about")}
             </Link>
             <Link href="/secrets" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
               Perfect Stay
             </Link>
             <Link href="/blogs" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("blogs")}
+              {t("nav.blogs")}
             </Link>
             <Link href="/contact" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("contact")}
+              {t("nav.contact")}
             </Link>
             <Link href="/login" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("login")}
+              {t("nav.login")}
             </Link>
             <Button
               size="sm"
@@ -57,7 +52,7 @@ export function Navbar() {
               className="text-[#E3D6C7] hover:text-[#B99B75] hover:bg-[#48647E] gap-2"
             >
               <Globe className="w-4 h-4" />
-              {t("languageSwitch")}
+              {locale === "en" ? "العربية" : "English"}
             </Button>
             <Link href="/booking">
               <Button className="bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">Book Now</Button>
@@ -84,14 +79,14 @@ export function Navbar() {
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("home")}
+                {t("nav.home")}
               </Link>
               <Link
                 href="/about"
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("about")}
+                {t("nav.about")}
               </Link>
               <Link
                 href="/secrets"
@@ -105,21 +100,21 @@ export function Navbar() {
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("blogs")}
+                {t("nav.blogs")}
               </Link>
               <Link
                 href="/contact"
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("contact")}
+                {t("nav.contact")}
               </Link>
               <Link
                 href="/login"
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {t("login")}
+                {t("nav.login")}
               </Link>
               <Button
                 size="sm"
@@ -131,7 +126,7 @@ export function Navbar() {
                 className="text-[#E3D6C7] hover:text-[#B99B75] hover:bg-[#48647E] gap-2 justify-start"
               >
                 <Globe className="w-4 h-4" />
-                {t("languageSwitch")}
+                {locale === "en" ? "العربية" : "English"}
               </Button>
               <Link href="/booking" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">Book Now</Button>
@@ -143,3 +138,5 @@ export function Navbar() {
     </nav>
   )
 }
+
+export default Navbar

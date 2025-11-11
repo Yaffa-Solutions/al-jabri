@@ -57,3 +57,5 @@ export function AboutDetails() {
     </section>
   )
 }
+
+export default AboutDetails

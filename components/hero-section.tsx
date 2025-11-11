@@ -1,12 +1,12 @@
 "use client"
 
-import { useTranslations } from "next-intl"
-import { Link } from "@/i18n/routing"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Building2 } from "lucide-react"
+import { useI18n } from "@/lib/i18n-context"
 
 export function HeroSection() {
-  const t = useTranslations("hero")
+  const { t } = useI18n()
 
   return (
     <section className="relative min-h-[600px] flex items-center justify-center bg-gradient-to-br from-[#324557] via-[#48647E] to-[#5F83A4] text-white">
@@ -17,21 +17,21 @@ export function HeroSection() {
           <Building2 className="w-12 h-12 text-[#B99B75]" />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance">{t("title")}</h1>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 text-balance">{t("hero.title")}</h1>
 
         <p className="text-lg sm:text-xl md:text-2xl text-[#E3D6C7] mb-8 max-w-3xl mx-auto text-pretty">
-          {t("subtitle")}
+          {t("hero.subtitle")}
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/booking">
             <Button size="lg" className="bg-[#B99B75] hover:bg-[#CEB89E] text-[#324557] font-semibold">
-              {t("bookNow")}
+              {t("hero.booking")}
             </Button>
           </Link>
           <Link href="/secrets">
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 bg-transparent">
-              {t("learnMore")}
+              {t("hero.secrets")}
             </Button>
           </Link>
         </div>
@@ -39,3 +39,5 @@ export function HeroSection() {
     </section>
   )
 }
+
+export default HeroSection

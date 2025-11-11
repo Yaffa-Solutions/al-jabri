@@ -1,9 +1,9 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useI18n } from "@/lib/i18n-context"
 
 export function AboutUs() {
-  const t = useTranslations("aboutUs")
+  const { t } = useI18n()
 
   return (
     <section className="py-16 px-4">
@@ -12,7 +12,7 @@ export function AboutUs() {
         <div className="relative mb-12">
           <div className="bg-[#324557] rounded-lg py-6 px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-[#B99B75]">
-              {t("title")} | {t("titleAr")}
+              {t("about.title")} | {t("about.subtitle")}
             </h2>
           </div>
           <div className="absolute left-1/2 -translate-x-1/2 -bottom-3 w-12 h-0.5 bg-[#B99B75]"></div>
@@ -31,7 +31,7 @@ export function AboutUs() {
 
           {/* Arabic Text */}
           <div className="mb-8 text-right" dir="rtl">
-            <p className="text-[#B99B75] text-lg md:text-xl leading-relaxed font-serif">{t("descriptionAr")}</p>
+            <p className="text-[#B99B75] text-lg md:text-xl leading-relaxed font-serif">{t("about.description.ar")}</p>
           </div>
 
           {/* Divider Line */}
@@ -39,10 +39,12 @@ export function AboutUs() {
 
           {/* English Text */}
           <div className="text-left">
-            <p className="text-[#B99B75] text-lg md:text-xl leading-relaxed">{t("description")}</p>
+            <p className="text-[#B99B75] text-lg md:text-xl leading-relaxed">{t("about.description")}</p>
           </div>
         </div>
       </div>
     </section>
   )
 }
+
+export default AboutUs

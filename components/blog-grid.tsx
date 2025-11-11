@@ -104,3 +104,5 @@ export function BlogGrid() {
     </section>
   )
 }
+
+export default BlogGrid

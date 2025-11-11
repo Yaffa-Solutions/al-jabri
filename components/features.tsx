@@ -1,32 +1,32 @@
 "use client"
 
-import { useTranslations } from "next-intl"
+import { useI18n } from "@/lib/i18n-context"
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, Clock, Award, Headphones } from "lucide-react"
 
 export function Features() {
-  const t = useTranslations("features")
+  const { t } = useI18n()
 
   const features = [
     {
       icon: Shield,
-      title: t("qualityService.title"),
-      description: t("qualityService.description"),
+      title: t("features.luxury"),
+      description: t("features.luxury.desc"),
     },
     {
       icon: Clock,
-      title: t("expertTeam.title"),
-      description: t("expertTeam.description"),
+      title: t("features.service"),
+      description: t("features.service.desc"),
     },
     {
       icon: Award,
-      title: t("modernFacilities.title"),
-      description: t("modernFacilities.description"),
+      title: t("features.locations"),
+      description: t("features.locations.desc"),
     },
     {
       icon: Headphones,
-      title: t("support.title"),
-      description: t("support.description"),
+      title: t("features.dining"),
+      description: t("features.dining.desc"),
     },
   ]
 
@@ -34,8 +34,8 @@ export function Features() {
     <section className="py-16 bg-[#E3D6C7]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#324557] mb-4">{t("title")}</h2>
-          <p className="text-lg text-[#48647E] max-w-2xl mx-auto">{t("subtitle")}</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#324557] mb-4">Why Choose Us</h2>
+          <p className="text-lg text-[#48647E] max-w-2xl mx-auto">Excellence in every aspect of hospitality</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -57,3 +57,5 @@ export function Features() {
     </section>
   )
 }
+
+export default Features

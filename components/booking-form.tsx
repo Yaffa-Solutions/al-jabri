@@ -232,3 +232,5 @@ export function BookingForm() {
     </section>
   )
 }
+
+export default BookingForm

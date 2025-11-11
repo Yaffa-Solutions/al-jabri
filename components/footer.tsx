@@ -3,15 +3,15 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useTranslations } from "next-intl"
-import { Link } from "@/i18n/routing"
+import Link from "next/link"
 import { Building2, Facebook, Twitter, Instagram, Linkedin, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
+import { useI18n } from "@/lib/i18n-context"
 
 export function Footer() {
-  const t = useTranslations("footer")
+  const { t } = useI18n()
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -67,7 +67,7 @@ export function Footer() {
               <Building2 className="w-8 h-8 text-[#B99B75]" />
               <span className="text-xl font-bold">Hotels Management</span>
             </div>
-            <p className="text-[#CEB89E] text-sm mb-4">{t("description")}</p>
+            <p className="text-[#CEB89E] text-sm mb-4">Excellence in hospitality management across Saudi Arabia</p>
             <div className="flex gap-3">
               <Button size="icon" variant="ghost" className="hover:bg-[#48647E] hover:text-[#B99B75]">
                 <Facebook className="w-5 h-5" />
@@ -85,42 +85,42 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("quickLinks")}</h3>
+            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("footer.quickLinks")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("aboutUs")}
+                  {t("nav.about")}
                 </Link>
               </li>
               <li>
                 <Link href="/secrets" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("perfectStay")}
+                  Perfect Stay
                 </Link>
               </li>
               <li>
                 <Link href="/blogs" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("blogs")}
+                  {t("nav.blogs")}
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("contact")}
+                  {t("footer.contact")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("support")}</h3>
+            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">Support</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/contact" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("help")}
+                  Help Center
                 </Link>
               </li>
               <li>
                 <Link href="/blogs" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  {t("blogs")}
+                  {t("nav.blogs")}
                 </Link>
               </li>
               <li>
@@ -137,12 +137,12 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("newsletter")}</h3>
-            <p className="text-[#CEB89E] text-sm mb-4">{t("newsletterText")}</p>
+            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("footer.newsletter")}</h3>
+            <p className="text-[#CEB89E] text-sm mb-4">{t("footer.newsletter.desc")}</p>
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input
                 type="email"
-                placeholder={t("emailPlaceholder")}
+                placeholder={t("footer.email")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-[#48647E] border-[#5F83A4] text-white placeholder:text-[#CEB89E]"
@@ -153,7 +153,7 @@ export function Footer() {
                 className="bg-[#B99B75] hover:bg-[#CEB89E] text-[#324557] whitespace-nowrap"
                 disabled={isLoading}
               >
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("subscribe")}
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : t("footer.subscribe")}
               </Button>
             </form>
           </div>
@@ -161,10 +161,12 @@ export function Footer() {
 
         <div className="border-t border-[#48647E] pt-8 text-center text-sm text-[#CEB89E]">
           <p>
-            &copy; {new Date().getFullYear()} Hotels Management. {t("rights")}
+            &copy; {new Date().getFullYear()} Hotels Management. {t("footer.rights")}
           </p>
         </div>
       </div>
     </footer>
   )
 }
+
+export default Footer
