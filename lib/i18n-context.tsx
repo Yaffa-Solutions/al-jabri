@@ -58,6 +58,7 @@ const translationsEn: Record<string, string> = {
   "nav.contact": "Contact",
   "nav.blogs": "Blogs",
   "nav.login": "Login",
+  "nav.secrets": "Perfect Stay",
 
   // Hero
   "hero.title": "Discover Luxury Hotels",
@@ -201,6 +202,26 @@ const translationsEn: Record<string, string> = {
   // Secrets
   "secrets.title": "Discover The Secrets Of The Perfect Stay",
   "secrets.subtitle": "Learn insider tips for making the most of your hotel experience",
+
+  // Auth
+  login: "Login",
+  signUp: "Sign Up",
+  logout: "Logout",
+  myAccount: "My Account",
+  profile: "Profile",
+  myBookings: "My Bookings",
+  email: "Email",
+  password: "Password",
+  repeatPassword: "Repeat Password",
+  firstName: "First Name",
+  lastName: "Last Name",
+  loginDescription: "Enter your email below to login to your account",
+  createAccount: "Create a new account",
+  noAccount: "Don't have an account?",
+  haveAccount: "Already have an account?",
+  loggingIn: "Logging in...",
+  creatingAccount: "Creating account...",
+  bookNow: "Book Now",
 }
 
 const translationsAr: Record<string, string> = {
@@ -210,6 +231,7 @@ const translationsAr: Record<string, string> = {
   "nav.contact": "اتصل بنا",
   "nav.blogs": "المدونات",
   "nav.login": "تسجيل الدخول",
+  "nav.secrets": "الإقامة المثالية",
 
   // Hero
   "hero.title": "اكتشف الفنادق الفاخرة",
@@ -344,4 +366,33 @@ const translationsAr: Record<string, string> = {
   "Back to Search": "العودة إلى البحث",
   night: "ليلة",
   "Book Now": "احجز الآن",
+
+  // Blogs
+  "blogs.title": "المدونة الخاصة بنا",
+  "blogs.subtitle": "أحدث التحليلات والقصص من عالم الضيافة",
+  "blogs.readMore": "اقرأ المزيد",
+
+  // Secrets
+  "secrets.title": "اكتشف أسرار الإقامة المثالية",
+  "secrets.subtitle": "تعلم النصائح الداخلية للاستفادة من تجربتك في الفندق",
+
+  // Auth
+  login: "تسجيل الدخول",
+  signUp: "إنشاء حساب",
+  logout: "تسجيل الخروج",
+  myAccount: "حسابي",
+  profile: "الملف الشخصي",
+  myBookings: "حجوزاتي",
+  email: "البريد الإلكتروني",
+  password: "كلمة المرور",
+  repeatPassword: "تكرار كلمة المرور",
+  firstName: "الاسم الأول",
+  lastName: "اسم العائلة",
+  loginDescription: "أدخل بريدك الإلكتروني لتسجيل الدخول إلى حسابك",
+  createAccount: "إنشاء حساب جديد",
+  noAccount: "ليس لديك حساب؟",
+  haveAccount: "لديك حساب بالفعل؟",
+  loggingIn: "جاري تسجيل الدخول...",
+  creatingAccount: "جاري إنشاء الحساب...",
+  bookNow: "احجز الآن",
 }

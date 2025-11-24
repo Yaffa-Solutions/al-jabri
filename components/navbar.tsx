@@ -1,18 +1,63 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Building2, Menu, X, Globe } from "lucide-react"
+import { Building2, Menu, X, Globe, User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useI18n } from "@/lib/i18n-context"
+import { createClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Navbar() {
   const { t, locale, setLocale } = useI18n()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const supabase = createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      setUser(user)
+      setIsLoading(false)
+    }
+
+    checkUser()
+
+    // Listen for auth changes
+    const supabase = createClient()
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const switchLanguage = () => {
     const newLocale = locale === "en" ? "ar" : "en"
     setLocale(newLocale)
+  }
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/")
+    router.refresh()
   }
 
   return (
@@ -34,7 +79,7 @@ export function Navbar() {
               {t("nav.about")}
             </Link>
             <Link href="/secrets" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              Perfect Stay
+              {t("nav.secrets")}
             </Link>
             <Link href="/blogs" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
               {t("nav.blogs")}
@@ -42,9 +87,45 @@ export function Navbar() {
             <Link href="/contact" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
               {t("nav.contact")}
             </Link>
-            <Link href="/login" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
-              {t("nav.login")}
-            </Link>
+
+            {!isLoading && (
+              <>
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-[#E3D6C7] hover:text-[#B99B75] hover:bg-[#48647E] gap-2"
+                      >
+                        <User className="w-4 h-4" />
+                        {user.user_metadata?.first_name || user.email?.split("@")[0]}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/profile">{t("profile")}</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/booking">{t("myBookings")}</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                        <LogOut className="w-4 h-4 mr-2" />
+                        {t("logout")}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link href="/auth/login" className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors">
+                    {t("nav.login")}
+                  </Link>
+                )}
+              </>
+            )}
+
             <Button
               size="sm"
               variant="ghost"
@@ -55,7 +136,7 @@ export function Navbar() {
               {locale === "en" ? "العربية" : "English"}
             </Button>
             <Link href="/booking">
-              <Button className="bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">Book Now</Button>
+              <Button className="bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">{t("bookNow")}</Button>
             </Link>
           </div>
 
@@ -93,7 +174,7 @@ export function Navbar() {
                 className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Perfect Stay
+                {t("nav.secrets")}
               </Link>
               <Link
                 href="/blogs"
@@ -109,13 +190,40 @@ export function Navbar() {
               >
                 {t("nav.contact")}
               </Link>
-              <Link
-                href="/login"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t("nav.login")}
-              </Link>
+
+              {!isLoading && (
+                <>
+                  {user ? (
+                    <>
+                      <Link
+                        href="/profile"
+                        className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {t("profile")}
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout()
+                          setMobileMenuOpen(false)
+                        }}
+                        className="text-red-400 hover:text-red-300 transition-colors py-2 text-left"
+                      >
+                        {t("logout")}
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/auth/login"
+                      className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {t("nav.login")}
+                    </Link>
+                  )}
+                </>
+              )}
+
               <Button
                 size="sm"
                 variant="ghost"
@@ -129,7 +237,9 @@ export function Navbar() {
                 {locale === "en" ? "العربية" : "English"}
               </Button>
               <Link href="/booking" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">Book Now</Button>
+                <Button className="w-full bg-[#B99B75] hover:bg-[#CEB89E] text-white font-semibold">
+                  {t("bookNow")}
+                </Button>
               </Link>
             </div>
           </div>
