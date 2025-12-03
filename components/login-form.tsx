@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,31 +23,25 @@ export function LoginForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       })
 
-      const data = await response.json()
-
-      if (data.success) {
-        localStorage.setItem("authToken", data.data.token)
-        localStorage.setItem("user", JSON.stringify(data.data.user))
-
+      if (result?.error) {
+        toast.error("Login failed", {
+          description: result.error || "Invalid credentials",
+        })
+      } else if (result?.ok) {
         toast.success("Login successful!", {
-          description: `Welcome back, ${data.data.user.name}!`,
+          description: "Welcome back!",
         })
 
         setTimeout(() => {
           router.push("/")
+          router.refresh()
         }, 1000)
-      } else {
-        toast.error("Login failed", {
-          description: data.error || "Invalid credentials",
-        })
       }
     } catch (error) {
       console.error("[v0] Login error:", error)
@@ -135,6 +130,12 @@ export function LoginForm() {
                 Sign up
               </a>
             </p>
+            <div className="mt-4 p-3 bg-blue-50 rounded text-xs text-gray-600">
+              <p className="font-semibold mb-1">Test Credentials:</p>
+              <p>Admin: admin@aljabri.com / Admin@123</p>
+              <p>Manager: manager@aljabri.com / Admin@123</p>
+              <p>User: user@test.com / User@123</p>
+            </div>
           </form>
         </CardContent>
       </Card>
