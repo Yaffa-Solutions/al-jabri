@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Building2, Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n-context';
@@ -10,11 +11,14 @@ import logo from '../public/logo-removebg-preview.png';
 export function Navbar() {
   const { t, locale, setLocale } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const switchLanguage = () => {
     const newLocale = locale === 'en' ? 'ar' : 'en';
     setLocale(newLocale);
   };
+
+  const isActive = (path: string) => pathname === path;
 
   return (
     <nav className="sticky top-0 z-50 bg-[#324557] text-white shadow-lg">
@@ -34,37 +38,61 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               href="/"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('nav.home')}
             </Link>
             <Link
               href="/about"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/about')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('nav.about')}
             </Link>
             <Link
               href="/secrets"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/secrets')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('footer.perfectStay')}
             </Link>
             <Link
               href="/blogs"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/blogs')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('nav.blogs')}
             </Link>
             <Link
               href="/contact"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/contact')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('nav.contact')}
             </Link>
             <Link
               href="/login"
-              className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors"
+              className={`transition-colors ${
+                isActive('/login')
+                  ? 'text-[#B99B75] font-semibold border-b-2 border-[#B99B75]'
+                  : 'text-[#E3D6C7] hover:text-[#B99B75]'
+              }`}
             >
               {t('nav.login')}
             </Link>
@@ -105,42 +133,66 @@ export function Navbar() {
             <div className="flex flex-col gap-4">
               <Link
                 href="/"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.home')}
               </Link>
               <Link
                 href="/about"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/about')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.about')}
               </Link>
               <Link
                 href="/secrets"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/secrets')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('footer.perfectStay')}{' '}
               </Link>
               <Link
                 href="/blogs"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/blogs')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.blogs')}
               </Link>
               <Link
                 href="/contact"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/contact')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.contact')}
               </Link>
               <Link
                 href="/login"
-                className="text-[#E3D6C7] hover:text-[#B99B75] transition-colors py-2"
+                className={`transition-colors py-2 ${
+                  isActive('/login')
+                    ? 'text-[#B99B75] font-semibold border-l-4 border-[#B99B75] pl-3'
+                    : 'text-[#E3D6C7] hover:text-[#B99B75]'
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.login')}
