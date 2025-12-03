@@ -56,6 +56,8 @@ export function useI18n() {
 }
 
 const translationsEn: Record<string, string> = {
+  'whyChooseUs': 'Why Choose Us',
+  'excellence': 'Excellence in every aspect of hospitality',
   // Navigation
   'nav.home': 'Home',
   'nav.about': 'About Us',
@@ -63,7 +65,7 @@ const translationsEn: Record<string, string> = {
   'nav.blogs': 'Blogs',
   'nav.login': 'Login',
   'nav.bookNow': 'Book Now',
-  'nav.companyName' : 'AL-GABER TOWERS',
+  'nav.companyName': 'AL-GABER TOWERS',
 
   // Hero
   'hero.title': 'Discover Luxury Hotels',
@@ -74,12 +76,9 @@ const translationsEn: Record<string, string> = {
 
   // About
   'about.title': 'ABOUT US',
-  'about.subtitle': 'من نحن',
-  'about.description':
-    'A specialized company in operating and managing hotels in KSA, dedicated to providing exceptional hospitality services that meet the aspirations of visitors to Kingdom. With the extensive experience of our management team in the hospitality sector, we ensure a comfortable and distinguished stay that reflects the highest standards of quality and professionalism.',
-  'about.description.ar':
-    'شركة متخصصة في تشغيل وإدارة الفنادق في المملكة العربية السعودية، حيث نعمل على تقديم خدمات ضيافة مميزة ترتقي لتطلعات زوار المملكة. بفضل خبرة إدارتنا الطويلة في قطاع الضيافة، نضمن تجربة إقامة مريحة ومتميزة تعكس أعلى معايير الجودة والاحترافية.',
-
+  'about.subtitle': 'Discover Our Story',
+  'about.description': `A specialized company in operating and managing hotels in KSA, dedicated to providing exceptional hospitality services that meet the aspirations of visitors to Kingdom. With the extensive experience of our management team in the hospitality sector, we ensure a comfortable and distinguished stay that reflects the highest standards of quality and professionalism.`,
+  'about.visionHistory': 'Our Vision & History',
   // Features
   'features.luxury': 'Luxury Accommodations',
   'features.luxury.desc':
@@ -88,8 +87,6 @@ const translationsEn: Record<string, string> = {
   'features.service.desc': 'Round-the-clock assistance for all your needs',
   'features.locations': 'Prime Locations',
   'features.locations.desc': 'Strategic locations across Saudi Arabia',
-  'features.dining': 'Fine Dining',
-  'features.dining.desc': 'Exceptional culinary experiences at every property',
 
   // Hotels
   'hotels.featured': 'Featured Hotels',
@@ -226,6 +223,18 @@ const translationsEn: Record<string, string> = {
   'secrets.subtitle':
     'Learn insider tips for making the most of your hotel experience',
 
+  // About Us - Vision, Mission, Values
+  'about.vision.title': 'Our Vision',
+  'about.vision.description':
+    'To lead in providing exceptional hospitality services that achieve the highest levels of customer satisfaction.',
+  'about.mission.title': 'Our Mission',
+  'about.mission.description':
+    'To provide an exceptional hospitality environment built on quality and innovation, serving the Guests of the Almighty and every visitor to the Kingdom of Saudi Arabia.',
+  'about.values.title': 'Our Values',
+  'about.values.quality': 'Quality',
+  'about.values.professionalism': 'Professionalism',
+  'about.values.flexibility': 'Flexibility',
+
   // Blog Editor
   'blog.editor.title': 'Create New Blog Post',
   'blog.editor.editTitle': 'Edit Blog Post',
@@ -259,6 +268,8 @@ const translationsEn: Record<string, string> = {
 };
 
 const translationsAr: Record<string, string> = {
+  'whyChooseUs': 'لماذا تختارنا',
+  'excellence': 'التميز في كل جانب من جوانب الضيافة',
   // Navigation
   'nav.home': 'الرئيسية',
   'nav.about': 'من نحن',
@@ -277,12 +288,10 @@ const translationsAr: Record<string, string> = {
 
   // About
   'about.title': 'من نحن',
-  'about.subtitle': 'ABOUT US',
+  'about.subtitle': 'تعرف على قصتنا',
   'about.description':
     'شركة متخصصة في تشغيل وإدارة الفنادق في المملكة العربية السعودية، حيث نعمل على تقديم خدمات ضيافة مميزة ترتقي لتطلعات زوار المملكة. بفضل خبرة إدارتنا الطويلة في قطاع الضيافة، نضمن تجربة إقامة مريحة ومتميزة تعكس أعلى معايير الجودة والاحترافية.',
-  'about.description.ar':
-    'A specialized company in operating and managing hotels in KSA, dedicated to providing exceptional hospitality services that meet the aspirations of visitors to Kingdom. With the extensive experience of our management team in the hospitality sector, we ensure a comfortable and distinguished stay that reflects the highest standards of quality and professionalism.',
-
+  'about.visionHistory': 'رؤيتنا وتاريخنا',
   // Features
   'features.luxury': 'أماكن إقامة فاخرة',
   'features.luxury.desc': 'استمتع براحة متميزة في فنادقنا المختارة بعناية',
@@ -291,9 +300,7 @@ const translationsAr: Record<string, string> = {
   'features.locations': 'مواقع رئيسية',
   'features.locations.desc':
     'مواقع استراتيجية في جميع أنحاء المملكة العربية السعودية',
-  'features.dining': 'تجربة طعام فاخرة',
-  'features.dining.desc': 'تجارب طهي استثنائية في كل فندق',
-
+    
   // Hotels
   'hotels.featured': 'الفنادق المميزة',
   'hotels.viewAll': 'عرض جميع الفنادق',
@@ -419,6 +426,18 @@ const translationsAr: Record<string, string> = {
   'blogs.readTime': 'وقت القراءة',
   'blogs.noBlogs': 'لا توجد مقالات متاحة حتى الآن. تحقق لاحقاً!',
   'blogs.previewMode': 'وضع المعاينة - هذا المنشور غير منشور بعد',
+
+  // About Us - Vision, Mission, Values
+  'about.vision.title': 'رؤيتنا',
+  'about.vision.description':
+    'الريادة في تقديم خدمات ضيافة استثنائية تحقق أعلى مستويات رضا العملاء.',
+  'about.mission.title': 'مهمتنا',
+  'about.mission.description':
+    'تقديم بيئة ضيافة استثنائية قائمة على الجودة والابتكار، لخدمة ضيوف الرحمن وكل زائر للمملكة العربية السعودية.',
+  'about.values.title': 'قيمنا',
+  'about.values.quality': 'الجودة',
+  'about.values.professionalism': 'الاحترافية',
+  'about.values.flexibility': 'المرونة',
 
   // Blog Editor
   'blog.editor.title': 'إنشاء مقال جديد',
