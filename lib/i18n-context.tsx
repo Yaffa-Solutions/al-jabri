@@ -242,6 +242,14 @@ const translationsEn: Record<string, string> = {
   'blogs.readTime': 'Read Time',
   'blogs.noBlogs': 'No blog posts available yet. Check back soon!',
   'blogs.previewMode': 'Preview Mode - This post is not published yet',
+  'blogs.loadingArticle': 'Loading Article...',
+  'blogs.notFound': 'Blog Post Not Found',
+  'blogs.shareArticle': 'Share this article:',
+  'blogs.planStay': 'Plan Your Stay',
+  'blogs.planStayDesc': 'Experience the luxury and comfort of Al-Gaber Towers on your next visit to the Kingdom.',
+  'blogs.bookNow': 'Book Now',
+  'blogs.recentArticles': 'Recent Articles',
+  'blogs.viewAllPosts': 'View All Posts',
 
   // Secrets
   'secrets.title': 'Discover The Secrets Of The Perfect Stay',
@@ -526,6 +534,14 @@ const translationsAr: Record<string, string> = {
   'blogs.readTime': 'وقت القراءة',
   'blogs.noBlogs': 'لا توجد مقالات متاحة حتى الآن. تحقق لاحقاً!',
   'blogs.previewMode': 'وضع المعاينة - هذا المنشور غير منشور بعد',
+  'blogs.loadingArticle': 'جاري تحميل المقال...',
+  'blogs.notFound': 'المقال غير موجود',
+  'blogs.shareArticle': 'شارك هذا المقال:',
+  'blogs.planStay': 'خطط لإقامتك',
+  'blogs.planStayDesc': 'اختبر الفخامة والراحة في منازل الجابر في زيارتك القادمة للمملكة.',
+  'blogs.bookNow': 'احجز الآن',
+  'blogs.recentArticles': 'المقالات الحديثة',
+  'blogs.viewAllPosts': 'عرض جميع المقالات',
 
   // Secrets
   'secrets.title': 'اكتشف أسرار الإقامة المثالية',
