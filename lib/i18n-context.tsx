@@ -56,8 +56,13 @@ export function useI18n() {
 }
 
 const translationsEn: Record<string, string> = {
-  'whyChooseUs': 'Why Choose Us',
-  'excellence': 'Excellence in every aspect of hospitality',
+  'stats.hotels': 'Hotels Managed',
+  'stats.rooms': 'Rooms',
+  'stats.years': 'Years Experience',
+  'stats.guests': 'Happy Guests',
+
+  whyChooseUs: 'Why Choose Us',
+  excellence: 'Excellence in every aspect of hospitality',
   // Navigation
   'nav.home': 'Home',
   'nav.about': 'About Us',
@@ -272,8 +277,13 @@ const translationsEn: Record<string, string> = {
 };
 
 const translationsAr: Record<string, string> = {
-  'whyChooseUs': 'لماذا تختارنا',
-  'excellence': 'التميز في كل جانب من جوانب الضيافة',
+  'stats.hotels': 'الفنادق المدارة',
+  'stats.rooms': 'الغرف',
+  'stats.years': 'سنوات الخبرة',
+  'stats.guests': 'الضيوف السعداء',
+
+  whyChooseUs: 'لماذا تختارنا',
+  excellence: 'التميز في كل جانب من جوانب الضيافة',
   // Navigation
   'nav.home': 'الرئيسية',
   'nav.about': 'من نحن',
@@ -304,7 +314,7 @@ const translationsAr: Record<string, string> = {
   'features.locations': 'مواقع رئيسية',
   'features.locations.desc':
     'مواقع استراتيجية في جميع أنحاء المملكة العربية السعودية',
-    
+
   // Hotels
   'hotels.featured': 'الفنادق المميزة',
   'hotels.viewAll': 'عرض جميع الفنادق',
