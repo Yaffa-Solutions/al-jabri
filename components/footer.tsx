@@ -94,7 +94,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/secrets" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  Perfect Stay
+                  {t("footer.perfectStay")}
                 </Link>
               </li>
               <li>
