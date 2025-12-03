@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
-import { authOptions } from "./auth"
+import { auth } from "./auth"
 
 /**
  * Middleware to check if user is authenticated
  */
 export async function requireAuth() {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   if (!session || !session.user) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
@@ -19,7 +18,7 @@ export async function requireAuth() {
  * Middleware to check if user is an admin or super-admin
  */
 export async function requireAdmin() {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   if (!session || !session.user) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
@@ -36,7 +35,7 @@ export async function requireAdmin() {
  * Middleware to check if user is a super-admin
  */
 export async function requireSuperAdmin() {
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   if (!session || !session.user) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })

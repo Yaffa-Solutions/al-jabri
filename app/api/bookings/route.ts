@@ -2,13 +2,12 @@ import { NextResponse } from "next/server"
 import { db } from "@/db"
 import { bookings, rooms } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { logActivity, ActivityActions } from "@/lib/activity-logger"
 
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
     const { searchParams } = new URL(request.url)
     const id = searchParams.get("id")
 
@@ -54,7 +53,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
+    const session = await auth()
 
     // Check if user is authenticated
     if (!session || !session.user) {
