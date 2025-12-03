@@ -229,8 +229,57 @@ const translationsEn: Record<string, string> = {
 
   // Secrets
   'secrets.title': 'Discover The Secrets Of The Perfect Stay',
+  'secrets.titleAr': 'اكتشف أسرار الإقامة المثالية',
   'secrets.subtitle':
-    'Learn insider tips for making the most of your hotel experience',
+    "After decades of hospitality excellence, we're sharing the insider knowledge that separates an ordinary hotel stay from an extraordinary experience. These are the principles we follow in every property we manage.",
+
+  // Secrets - Individual Cards
+  'secrets.location.title': 'Choose the Right Location',
+  'secrets.location.description':
+    'The location sets the tone for your entire stay. Select a hotel that provides easy access to attractions while offering a peaceful retreat.',
+  'secrets.location.tip1': 'Research neighborhood safety and accessibility',
+  'secrets.location.tip2': 'Consider proximity to transportation hubs',
+  'secrets.location.tip3': 'Check nearby dining and entertainment options',
+
+  'secrets.cleanliness.title': 'Prioritize Cleanliness & Safety',
+  'secrets.cleanliness.description':
+    'A truly perfect stay begins with impeccable hygiene standards and comprehensive safety measures.',
+  'secrets.cleanliness.tip1': 'Look for hotels with stringent cleaning protocols',
+  'secrets.cleanliness.tip2': 'Verify security measures and emergency procedures',
+  'secrets.cleanliness.tip3': 'Read recent guest reviews about cleanliness',
+
+  'secrets.service.title': 'Seek Personalized Service',
+  'secrets.service.description':
+    'Exceptional hospitality transforms a good stay into an unforgettable experience.',
+  'secrets.service.tip1': 'Choose hotels known for attentive staff',
+  'secrets.service.tip2': 'Look for personalized welcome amenities',
+  'secrets.service.tip3': 'Consider properties with concierge services',
+
+  'secrets.flexibility.title': 'Flexible Check-in & Check-out',
+  'secrets.flexibility.description':
+    'Travel plans change. Hotels offering flexibility show they value your convenience.',
+  'secrets.flexibility.tip1': 'Inquire about early check-in options',
+  'secrets.flexibility.tip2': 'Ask about late checkout availability',
+  'secrets.flexibility.tip3': 'Look for 24-hour reception services',
+
+  'secrets.amenities.title': 'Quality Amenities Matter',
+  'secrets.amenities.description':
+    'The right amenities can elevate your stay from ordinary to extraordinary.',
+  'secrets.amenities.tip1': 'Verify room amenities match your needs',
+  'secrets.amenities.tip2': 'Check for fitness center and pool facilities',
+  'secrets.amenities.tip3': 'Look for complimentary services like breakfast',
+
+  'secrets.attention.title': 'Attention to Detail',
+  'secrets.attention.description':
+    'Small touches make the biggest difference in creating memorable stays.',
+  'secrets.attention.tip1': 'Look for thoughtful room design',
+  'secrets.attention.tip2': 'Notice welcome gestures and special touches',
+  'secrets.attention.tip3': 'Consider hotels with unique character',
+
+  'secrets.cta.title': 'Ready for Your Perfect Stay?',
+  'secrets.cta.description':
+    'Experience these principles firsthand at any of our managed properties across Saudi Arabia',
+  'secrets.cta.button': 'Start Your Booking',
 
   // About Us - Vision, Mission, Values
   'about.vision.title': 'Our Vision',
@@ -444,6 +493,60 @@ const translationsAr: Record<string, string> = {
   'blogs.readTime': 'وقت القراءة',
   'blogs.noBlogs': 'لا توجد مقالات متاحة حتى الآن. تحقق لاحقاً!',
   'blogs.previewMode': 'وضع المعاينة - هذا المنشور غير منشور بعد',
+
+  // Secrets
+  'secrets.title': 'اكتشف أسرار الإقامة المثالية',
+  'secrets.titleAr': 'اكتشف أسرار الإقامة المثالية',
+  'secrets.subtitle':
+    'بعد عقود من التميز في مجال الضيافة، نشارككم المعرفة الداخلية التي تفصل بين الإقامة العادية والتجربة الاستثنائية. هذه هي المبادئ التي نتبعها في كل فندق نديره.',
+
+  // Secrets - Individual Cards
+  'secrets.location.title': 'اختر الموقع المناسب',
+  'secrets.location.description':
+    'الموقع يحدد طابع إقامتك بالكامل. اختر فندقاً يوفر سهولة الوصول إلى المعالم السياحية مع توفير ملاذ هادئ.',
+  'secrets.location.tip1': 'ابحث عن سلامة الحي وإمكانية الوصول',
+  'secrets.location.tip2': 'خذ في الاعتبار القرب من مراكز النقل',
+  'secrets.location.tip3': 'تحقق من خيارات تناول الطعام والترفيه القريبة',
+
+  'secrets.cleanliness.title': 'أعط الأولوية للنظافة والسلامة',
+  'secrets.cleanliness.description':
+    'الإقامة المثالية تبدأ بمعايير نظافة لا تشوبها شائبة وتدابير سلامة شاملة.',
+  'secrets.cleanliness.tip1': 'ابحث عن الفنادق ذات بروتوكولات التنظيف الصارمة',
+  'secrets.cleanliness.tip2': 'تحقق من التدابير الأمنية وإجراءات الطوارئ',
+  'secrets.cleanliness.tip3': 'اقرأ تقييمات الضيوف الحديثة حول النظافة',
+
+  'secrets.service.title': 'ابحث عن خدمة شخصية',
+  'secrets.service.description':
+    'الضيافة الاستثنائية تحول الإقامة الجيدة إلى تجربة لا تُنسى.',
+  'secrets.service.tip1': 'اختر الفنادق المعروفة بطاقم العمل المهتم',
+  'secrets.service.tip2': 'ابحث عن وسائل الراحة الترحيبية الشخصية',
+  'secrets.service.tip3': 'فكر في الفنادق التي تقدم خدمات الكونسيرج',
+
+  'secrets.flexibility.title': 'مرونة الدخول والخروج',
+  'secrets.flexibility.description':
+    'خطط السفر تتغير. الفنادق التي تقدم المرونة تظهر أنها تقدر راحتك.',
+  'secrets.flexibility.tip1': 'استفسر عن خيارات تسجيل الوصول المبكر',
+  'secrets.flexibility.tip2': 'اسأل عن توفر تسجيل المغادرة المتأخر',
+  'secrets.flexibility.tip3': 'ابحث عن خدمات الاستقبال على مدار 24 ساعة',
+
+  'secrets.amenities.title': 'جودة المرافق مهمة',
+  'secrets.amenities.description':
+    'المرافق المناسبة يمكن أن ترفع إقامتك من عادية إلى استثنائية.',
+  'secrets.amenities.tip1': 'تحقق من أن مرافق الغرفة تتناسب مع احتياجاتك',
+  'secrets.amenities.tip2': 'تحقق من مرافق مركز اللياقة البدنية والمسبح',
+  'secrets.amenities.tip3': 'ابحث عن الخدمات المجانية مثل الإفطار',
+
+  'secrets.attention.title': 'الاهتمام بالتفاصيل',
+  'secrets.attention.description':
+    'اللمسات الصغيرة تحدث أكبر فرق في خلق إقامات لا تُنسى.',
+  'secrets.attention.tip1': 'ابحث عن تصميم الغرفة المدروس',
+  'secrets.attention.tip2': 'لاحظ إيماءات الترحيب واللمسات الخاصة',
+  'secrets.attention.tip3': 'فكر في الفنادق ذات الطابع الفريد',
+
+  'secrets.cta.title': 'هل أنت مستعد لإقامتك المثالية؟',
+  'secrets.cta.description':
+    'جرب هذه المبادئ بنفسك في أي من فنادقنا المدارة في جميع أنحاء المملكة العربية السعودية',
+  'secrets.cta.button': 'ابدأ حجزك',
 
   // About Us - Vision, Mission, Values
   'about.vision.title': 'رؤيتنا',
