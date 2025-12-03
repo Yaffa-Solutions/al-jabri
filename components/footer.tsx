@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useI18n } from "@/lib/i18n-context"
+import logo from '../public/logo-removebg-preview.png';
+import Image from "next/image"
 
 export function Footer() {
   const { t } = useI18n()
@@ -64,10 +66,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <Building2 className="w-8 h-8 text-[#B99B75]" />
-              <span className="text-xl font-bold">Hotels Management</span>
+              <Image src={logo} alt="Company Logo" width={120} height={120} />
+              <span className="text-xl font-bold">{t('nav.companyName')}</span>
             </div>
-            <p className="text-[#CEB89E] text-sm mb-4">Excellence in hospitality management across Saudi Arabia</p>
+            <p className="text-[#CEB89E] text-sm mb-4">{t('excellence')}</p>
             <div className="flex gap-3">
               <Button size="icon" variant="ghost" className="hover:bg-[#48647E] hover:text-[#B99B75]">
                 <Facebook className="w-5 h-5" />
@@ -111,11 +113,11 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">Support</h3>
+            <h3 className="font-semibold text-lg mb-4 text-[#B99B75]">{t("footer.support")}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/contact" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  Help Center
+                  {t("footer.helpCenter")}
                 </Link>
               </li>
               <li>
@@ -125,12 +127,12 @@ export function Footer() {
               </li>
               <li>
                 <a href="#" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  Privacy Policy
+                  {t("footer.privacyPolicy")}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-[#CEB89E] hover:text-[#B99B75] transition-colors">
-                  Terms of Service
+                  {t("footer.termsOfService")}
                 </a>
               </li>
             </ul>
@@ -161,7 +163,7 @@ export function Footer() {
 
         <div className="border-t border-[#48647E] pt-8 text-center text-sm text-[#CEB89E]">
           <p>
-            &copy; {new Date().getFullYear()} Hotels Management. {t("footer.rights")}
+            &copy; {new Date().getFullYear()} {t("nav.companyName")}. {t("footer.rights")}
           </p>
         </div>
       </div>

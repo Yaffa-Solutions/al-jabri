@@ -111,6 +111,10 @@ const translationsEn: Record<string, string> = {
   'footer.contact': 'Contact',
   'footer.rights': 'All rights reserved',
   'footer.perfectStay': 'Perfect Stay',
+  'footer.support': 'Support',
+  'footer.helpCenter': 'Help Center',
+  'footer.privacyPolicy': 'Privacy Policy',
+  'footer.termsOfService': 'Terms of Service',
 
   // Login
   'login.title': 'Welcome Back',
@@ -324,6 +328,10 @@ const translationsAr: Record<string, string> = {
   'footer.contact': 'اتصل بنا',
   'footer.rights': 'جميع الحقوق محفوظة',
   'footer.perfectStay': 'إقامة مثالية',
+  'footer.helpCenter': 'مركز المساعدة',
+  'footer.privacyPolicy': 'سياسة الخصوصية',
+  'footer.termsOfService': 'شروط الخدمة',
+  'footer.support': 'الدعم',
   // Login
   'login.title': 'مرحباً بعودتك',
   'login.subtitle': 'سجل الدخول إلى حسابك',
