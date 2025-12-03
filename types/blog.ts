@@ -19,6 +19,9 @@ export type BlogFormData = {
   title: string
   excerpt: string
   content: ContentBlock[]
+  titleAr?: string
+  excerptAr?: string
+  contentAr?: ContentBlock[]
   category: string
   tags: string[]
   coverImage: string | null
@@ -37,6 +40,9 @@ export type Blog = {
   title: string
   excerpt: string
   content: ContentBlock[]
+  titleAr?: string
+  excerptAr?: string
+  contentAr?: ContentBlock[]
   category: string
   tags: string[]
   coverImage: string | null

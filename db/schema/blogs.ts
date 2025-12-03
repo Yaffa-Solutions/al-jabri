@@ -31,11 +31,15 @@ export const blogs = pgTable("blogs", {
   // Language code: 'en' or 'ar'
   languageCode: varchar("language_code", { length: 2 }).notNull().default("en"),
 
+  // English content
   title: varchar("title", { length: 500 }).notNull(),
   excerpt: text("excerpt").notNull(),
-
-  // Block-based content stored as JSON array
   content: jsonb("content").notNull().$type<ContentBlock[]>(),
+
+  // Arabic content
+  titleAr: varchar("title_ar", { length: 500 }),
+  excerptAr: text("excerpt_ar"),
+  contentAr: jsonb("content_ar").$type<ContentBlock[]>(),
 
   category: varchar("category", { length: 100 }).notNull(),
   tags: jsonb("tags").$type<string[]>().default([]),

@@ -127,8 +127,7 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
       const url = initialData ? '/api/blogs' : '/api/blogs';
       const method = initialData ? 'PUT' : 'POST';
 
-      // For now, we'll save the English version as primary content
-      // You may want to modify your backend to handle bilingual content
+      // Send bilingual content to the backend
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -137,6 +136,9 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
           title: bilingualContent.titleEn,
           excerpt: bilingualContent.excerptEn,
           content: [{ type: 'text', id: createId(), data: bilingualContent.contentEn }],
+          titleAr: bilingualContent.titleAr,
+          excerptAr: bilingualContent.excerptAr,
+          contentAr: [{ type: 'text', id: createId(), data: bilingualContent.contentAr }],
           published: publish,
           authorId,
           ...(initialData && { id: initialData.id }),
