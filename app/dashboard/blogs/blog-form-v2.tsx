@@ -1,268 +1,458 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Loader2, Upload, X, Plus } from "lucide-react"
-import { createId } from "@paralleldrive/cuid2"
-import { useI18n } from "@/lib/i18n-context"
-import type { BlogFormData, ContentBlock } from "@/types/blog"
-import BlockEditor from "@/components/blog-blocks/block-editor"
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Loader2, Upload, X, Plus, Eye } from 'lucide-react';
+import { createId } from '@paralleldrive/cuid2';
+import { useI18n } from '@/lib/i18n-context';
+import type { BlogFormData, ContentBlock } from '@/types/blog';
+import WysiwygEditor from '@/components/wysiwyg-editor';
 
 type BlogFormV2Props = {
-  authorId: string
+  authorId: string;
   initialData?: {
-    id: string
-    title: string
-    excerpt: string
-    content: ContentBlock[]
-    category: string
-    tags: string[]
-    coverImage: string | null
-    readTime: string
-    published: boolean
-    languageCode: "en" | "ar"
-    metaDescription?: string
-    metaKeywords?: string
-  }
-}
+    id: string;
+    title: string;
+    excerpt: string;
+    content: ContentBlock[];
+    category: string;
+    tags: string[];
+    coverImage: string | null;
+    readTime: string;
+    published: boolean;
+    languageCode: 'en' | 'ar';
+    metaDescription?: string;
+    metaKeywords?: string;
+  };
+};
 
 export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
-  const router = useRouter()
-  const { locale, setLocale, t } = useI18n()
-  const [loading, setLoading] = useState(false)
-  const [imageUploading, setImageUploading] = useState(false)
-  const [activeTab, setActiveTab] = useState<"content" | "meta" | "seo">("content")
-  const [tagInput, setTagInput] = useState("")
+  const router = useRouter();
+  const { locale, setLocale, t } = useI18n();
+  const [loading, setLoading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'content' | 'meta' | 'seo'>(
+    'content'
+  );
+  const [tagInput, setTagInput] = useState('');
 
   const [formData, setFormData] = useState<BlogFormData>({
-    title: initialData?.title || "",
-    excerpt: initialData?.excerpt || "",
-    content: initialData?.content || [{ type: "text", id: createId(), data: "" }],
-    category: initialData?.category || "",
+    title: initialData?.title || '',
+    excerpt: initialData?.excerpt || '',
+    content: initialData?.content || [
+      { type: 'text', id: createId(), data: '' },
+    ],
+    category: initialData?.category || '',
     tags: initialData?.tags || [],
     coverImage: initialData?.coverImage || null,
-    readTime: initialData?.readTime || "5 min read",
+    readTime: initialData?.readTime || '5 min read',
     published: initialData?.published || false,
     languageCode: initialData?.languageCode || locale,
-    metaDescription: initialData?.metaDescription || "",
-    metaKeywords: initialData?.metaKeywords || "",
-  })
+    metaDescription: initialData?.metaDescription || '',
+    metaKeywords: initialData?.metaKeywords || '',
+  });
+
+  // Separate state for bilingual content
+  const [bilingualContent, setBilingualContent] = useState({
+    titleEn: initialData?.title || '',
+    titleAr: '',
+    excerptEn: initialData?.excerpt || '',
+    excerptAr: '',
+    contentEn: '',
+    contentAr: '',
+  });
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    setImageUploading(true)
+    setImageUploading(true);
     try {
-      const formDataObj = new FormData()
-      formDataObj.append("file", file)
+      const formDataObj = new FormData();
+      formDataObj.append('file', file);
 
-      const response = await fetch("/api/upload", {
-        method: "POST",
+      const response = await fetch('/api/upload', {
+        method: 'POST',
         body: formDataObj,
-      })
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to upload image")
+        throw new Error('Failed to upload image');
       }
 
-      const data = await response.json()
-      setFormData((prev) => ({ ...prev, coverImage: data.data.url }))
+      const data = await response.json();
+      setFormData((prev) => ({ ...prev, coverImage: data.data.url }));
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Failed to upload image")
+      alert(error instanceof Error ? error.message : 'Failed to upload image');
     } finally {
-      setImageUploading(false)
+      setImageUploading(false);
     }
-  }
+  };
 
   const handleAddTag = () => {
     if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
       setFormData((prev) => ({
         ...prev,
         tags: [...prev.tags, tagInput.trim()],
-      }))
-      setTagInput("")
+      }));
+      setTagInput('');
     }
-  }
+  };
 
   const handleRemoveTag = (tagToRemove: string) => {
     setFormData((prev) => ({
       ...prev,
       tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (publish: boolean = false) => {
-    setLoading(true)
+    // Validation
+    if (!bilingualContent.titleEn || !bilingualContent.excerptEn || !bilingualContent.contentEn) {
+      alert('Please fill in all required English fields (Title, Excerpt, Content)');
+      return;
+    }
+    if (!bilingualContent.titleAr || !bilingualContent.excerptAr || !bilingualContent.contentAr) {
+      alert('Please fill in all required Arabic fields (العنوان، المقتطف، المحتوى)');
+      return;
+    }
+    if (!formData.category) {
+      alert('Please fill in the category in the Meta tab');
+      return;
+    }
+
+    setLoading(true);
 
     try {
-      const url = initialData ? "/api/blogs" : "/api/blogs"
-      const method = initialData ? "PUT" : "POST"
+      const url = initialData ? '/api/blogs' : '/api/blogs';
+      const method = initialData ? 'PUT' : 'POST';
 
+      // For now, we'll save the English version as primary content
+      // You may want to modify your backend to handle bilingual content
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          title: bilingualContent.titleEn,
+          excerpt: bilingualContent.excerptEn,
+          content: [{ type: 'text', id: createId(), data: bilingualContent.contentEn }],
           published: publish,
           authorId,
           ...(initialData && { id: initialData.id }),
         }),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || "Failed to save blog")
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to save blog');
       }
 
-      router.push("/dashboard/blogs")
-      router.refresh()
+      router.push('/dashboard/blogs');
+      router.refresh();
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Failed to save blog")
+      alert(error instanceof Error ? error.message : 'Failed to save blog');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const currentDir = formData.languageCode === "ar" ? "rtl" : "ltr"
+  const currentDir = formData.languageCode === 'ar' ? 'rtl' : 'ltr';
 
   return (
-    <div className="flex gap-6 h-[calc(100vh-200px)]">
-      {/* Main Content Area - Left Panel */}
-      <div className="flex-1 flex flex-col bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-        {/* Header with Language Switcher */}
-        <div className="border-b border-gray-200 px-6 py-4 bg-gray-50 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">
-            {initialData ? t("blog.editor.editTitle") : t("blog.editor.title")}
-          </h2>
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700">{t("blog.editor.language")}:</label>
-            <select
-              value={formData.languageCode}
-              onChange={(e) => {
-                const newLang = e.target.value as "en" | "ar"
-                setFormData({ ...formData, languageCode: newLang })
-                setLocale(newLang)
+    // create a container column
+    <div className="flex flex-col gap-6">
+      <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            {initialData ? t('blog.editor.editTitle') : t('blog.editor.title')}
+          </h1>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                // TODO: Implement preview functionality
+                console.log('Preview clicked');
               }}
-              className="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center gap-2 font-medium transition-colors"
             >
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-            </select>
+              <Eye className="w-4 h-4" />
+              Preview
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSubmit(false)}
+              disabled={loading}
+              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 flex items-center gap-2 font-medium transition-colors"
+            >
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+              Draft
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSubmit(true)}
+              disabled={loading}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 font-medium transition-colors"
+            >
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+              Publish
+            </button>
           </div>
         </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Cover Image
+        </label>
+        {formData.coverImage ? (
+          <div className="relative group">
+            <img
+              src={formData.coverImage}
+              alt="Cover"
+              className="w-full h-32 object-cover rounded-lg border border-gray-200"
+            />
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, coverImage: null })}
+              className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        ) : (
+          <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+            {imageUploading ? (
+              <Loader2 className="w-8 h-8 text-gray-400 animate-spin" />
+            ) : (
+              <>
+                <Upload className="w-6 h-2 text-gray-400 mb-2" />
+                <span className="text-sm text-gray-600 font-medium">
+                  Click to upload cover image
+                </span>
+                <span className="text-xs text-gray-500 mt-1">
+                  PNG, JPG, GIF up to 10MB
+                </span>
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+              disabled={imageUploading}
+            />
+          </label>
+        )}
+      </div>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+       
 
         {/* Tabs */}
         <div className="border-b border-gray-200 bg-white">
           <div className="flex">
             <button
               type="button"
-              onClick={() => setActiveTab("content")}
+              onClick={() => setActiveTab('content')}
               className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
-                activeTab === "content"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-600 hover:text-gray-900"
+                activeTab === 'content'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
-              {t("blog.editor.content")}
+              {t('blog.editor.content')}
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("meta")}
+              onClick={() => setActiveTab('meta')}
               className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
-                activeTab === "meta"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-600 hover:text-gray-900"
+                activeTab === 'meta'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
-              {t("blog.editor.meta")}
+              {t('blog.editor.meta')}
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("seo")}
+              onClick={() => setActiveTab('seo')}
               className={`px-6 py-3 font-medium text-sm border-b-2 transition-colors ${
-                activeTab === "seo"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-600 hover:text-gray-900"
+                activeTab === 'seo'
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
-              {t("blog.editor.seo")}
+              {t('blog.editor.seo')}
             </button>
           </div>
         </div>
 
         {/* Tab Content */}
         <div className="flex-1 overflow-y-auto p-6">
-          {activeTab === "content" && (
-            <div className="space-y-6" dir={currentDir}>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.postTitle")} *
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-semibold"
-                  placeholder={t("blog.editor.enterTitle")}
-                  dir={currentDir}
-                  required
-                />
+          {activeTab === 'content' && (
+            <div className="grid grid-cols-2 gap-6">
+              {/* English Section - Left */}
+              <div className="space-y-6 border-r pr-6">
+                <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                  English Content
+                </h3>
+
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={bilingualContent.titleEn}
+                    onChange={(e) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        titleEn: e.target.value
+                      })
+                    }
+                    className="peer w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400 text-lg font-semibold placeholder-transparent"
+                    placeholder="Title"
+                    dir="ltr"
+                    required
+                  />
+                  <label className="absolute left-3 -top-2.5 bg-white px-1 text-sm font-medium text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-700 transition-all">
+                    Title *
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <textarea
+                    value={bilingualContent.excerptEn}
+                    onChange={(e) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        excerptEn: e.target.value
+                      })
+                    }
+                    rows={3}
+                    className="peer w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400 placeholder-transparent"
+                    placeholder="Excerpt"
+                    dir="ltr"
+                    required
+                  />
+                  <label className="absolute left-3 -top-2.5 bg-white px-1 text-sm font-medium text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-700 transition-all">
+                    Excerpt *
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Content *
+                  </label>
+                  <WysiwygEditor
+                    content={bilingualContent.contentEn}
+                    onChange={(content) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        contentEn: content
+                      })
+                    }
+                    dir="ltr"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.excerpt")} *
-                </label>
-                <textarea
-                  value={formData.excerpt}
-                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                  rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={t("blog.editor.enterExcerpt")}
-                  dir={currentDir}
-                  required
-                />
-              </div>
+              {/* Arabic Section - Right */}
+              <div className="space-y-6 pl-6">
+                <h3 className="text-lg font-semibold text-gray-900 border-b pb-2 text-right">
+                  المحتوى العربي
+                </h3>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">Content Blocks *</label>
-                <BlockEditor
-                  blocks={formData.content}
-                  onChange={(blocks) => setFormData({ ...formData, content: blocks })}
-                  dir={currentDir}
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={bilingualContent.titleAr}
+                    onChange={(e) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        titleAr: e.target.value
+                      })
+                    }
+                    className="peer w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400 text-lg font-semibold placeholder-transparent"
+                    placeholder="العنوان"
+                    dir="rtl"
+                    required
+                  />
+                  <label className="absolute right-3 -top-2.5 bg-white px-1 text-sm font-medium text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-700 transition-all">
+                    العنوان *
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <textarea
+                    value={bilingualContent.excerptAr}
+                    onChange={(e) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        excerptAr: e.target.value
+                      })
+                    }
+                    rows={3}
+                    className="peer w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400 placeholder-transparent"
+                    placeholder="المقتطف"
+                    dir="rtl"
+                    required
+                  />
+                  <label className="absolute right-3 -top-2.5 bg-white px-1 text-sm font-medium text-gray-600 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-gray-700 transition-all">
+                    المقتطف *
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 text-right">
+                    المحتوى *
+                  </label>
+                  <WysiwygEditor
+                    content={bilingualContent.contentAr}
+                    onChange={(content) =>
+                      setBilingualContent({
+                        ...bilingualContent,
+                        contentAr: content
+                      })
+                    }
+                    dir="rtl"
+                  />
+                </div>
               </div>
             </div>
           )}
 
-          {activeTab === "meta" && (
+          {activeTab === 'meta' && (
             <div className="space-y-6" dir={currentDir}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.category")} *
+                  {t('blog.editor.category')} *
                 </label>
                 <input
                   type="text"
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={t("blog.editor.enterCategory")}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                  placeholder={t('blog.editor.enterCategory')}
                   dir={currentDir}
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t("blog.editor.tags")}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('blog.editor.tags')}
+                </label>
                 <div className="flex gap-2 mb-2">
                   <input
                     type="text"
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddTag())}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder={t("blog.editor.addTag")}
+                    onKeyDown={(e) =>
+                      e.key === 'Enter' && (e.preventDefault(), handleAddTag())
+                    }
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                    placeholder={t('blog.editor.addTag')}
                     dir={currentDir}
                   />
                   <button
@@ -281,7 +471,11 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
                       className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
                     >
                       {tag}
-                      <button type="button" onClick={() => handleRemoveTag(tag)} className="hover:text-blue-600">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="hover:text-blue-600"
+                      >
                         <X className="w-3 h-3" />
                       </button>
                     </span>
@@ -291,149 +485,63 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.readTime")}
+                  {t('blog.editor.readTime')}
                 </label>
                 <input
                   type="text"
                   value={formData.readTime}
-                  onChange={(e) => setFormData({ ...formData, readTime: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  onChange={(e) =>
+                    setFormData({ ...formData, readTime: e.target.value })
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
                   placeholder="5 min read"
                 />
               </div>
             </div>
           )}
 
-          {activeTab === "seo" && (
+          {activeTab === 'seo' && (
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.metaDescription")}
+                  {t('blog.editor.metaDescription')}
                 </label>
                 <textarea
                   value={formData.metaDescription}
-                  onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      metaDescription: e.target.value,
+                    })
+                  }
                   rows={3}
                   maxLength={160}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={t("blog.editor.enterMetaDesc")}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                  placeholder={t('blog.editor.enterMetaDesc')}
                 />
-                <p className="text-xs text-gray-500 mt-1">{formData.metaDescription?.length || 0} / 160</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {formData.metaDescription?.length || 0} / 160
+                </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.metaKeywords")}
+                  {t('blog.editor.metaKeywords')}
                 </label>
                 <input
                   type="text"
                   value={formData.metaKeywords}
-                  onChange={(e) => setFormData({ ...formData, metaKeywords: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder={t("blog.editor.enterMetaKeywords")}
+                  onChange={(e) =>
+                    setFormData({ ...formData, metaKeywords: e.target.value })
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-400"
+                  placeholder={t('blog.editor.enterMetaKeywords')}
                 />
               </div>
             </div>
           )}
         </div>
       </div>
-
-      {/* Right Sidebar - Meta Settings */}
-      <div className="w-80 bg-white rounded-lg shadow border border-gray-200 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-4">Publishing</h3>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("blog.editor.coverImage")}
-                </label>
-                {formData.coverImage ? (
-                  <div className="relative group">
-                    <img
-                      src={formData.coverImage}
-                      alt="Cover"
-                      className="w-full h-32 object-cover rounded-lg border border-gray-200"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, coverImage: null })}
-                      className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
-                    {imageUploading ? (
-                      <Loader2 className="w-6 h-6 text-gray-400 animate-spin" />
-                    ) : (
-                      <>
-                        <Upload className="w-6 h-6 text-gray-400 mb-1" />
-                        <span className="text-xs text-gray-500">Upload image</span>
-                      </>
-                    )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      disabled={imageUploading}
-                    />
-                  </label>
-                )}
-              </div>
-
-              <div>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.published}
-                    onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="text-sm font-medium text-gray-700">{t("blog.editor.published")}</span>
-                </label>
-                <p className="text-xs text-gray-500 mt-1">
-                  {formData.published ? "Post is visible to everyone" : "Post is saved as draft"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t pt-6">
-            <div className="space-y-3">
-              <button
-                type="button"
-                onClick={() => handleSubmit(false)}
-                disabled={loading}
-                className="w-full px-4 py-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
-              >
-                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                {t("blog.editor.saveDraft")}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSubmit(true)}
-                disabled={loading}
-                className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 font-medium"
-              >
-                {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                {t("blog.editor.publish")}
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                disabled={loading}
-                className="w-full px-4 py-2.5 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 font-medium"
-              >
-                {t("blog.editor.cancel")}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  )
+  );
 }
