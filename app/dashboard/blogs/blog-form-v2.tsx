@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, Upload, X, Plus, Eye } from 'lucide-react';
+import { Loader2, Upload, X, Plus, Eye, Languages } from 'lucide-react';
 import { createId } from '@paralleldrive/cuid2';
 import { useI18n } from '@/lib/i18n-context';
 import type { BlogFormData, ContentBlock } from '@/types/blog';
@@ -35,6 +35,8 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
     'content'
   );
   const [tagInput, setTagInput] = useState('');
+  const [translating, setTranslating] = useState(false);
+  const [translationDirection, setTranslationDirection] = useState<'en-to-ar' | 'ar-to-en'>('en-to-ar');
 
   const [formData, setFormData] = useState<BlogFormData>({
     title: initialData?.title || '',
@@ -104,6 +106,134 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
       ...prev,
       tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }));
+  };
+
+  const handleTranslate = async () => {
+    // Validate based on translation direction
+    const isEnToAr = translationDirection === 'en-to-ar';
+    const sourceTitle = isEnToAr ? bilingualContent.titleEn : bilingualContent.titleAr;
+    const sourceExcerpt = isEnToAr ? bilingualContent.excerptEn : bilingualContent.excerptAr;
+    const sourceContent = isEnToAr ? bilingualContent.contentEn : bilingualContent.contentAr;
+
+    if (!sourceTitle || !sourceExcerpt || !sourceContent) {
+      const lang = isEnToAr ? 'English' : 'Arabic';
+      alert(`Please fill in ${lang} content first before translating`);
+      return;
+    }
+
+    setTranslating(true);
+    try {
+      // Translation function using Google Translate's free API
+      const translateText = async (text: string, fromLang: string, toLang: string): Promise<string> => {
+        try {
+          if (!text.trim()) return text;
+
+          // For HTML content (from WYSIWYG editor), extract text nodes and translate them
+          if (text.includes('<')) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+
+            // Get all text nodes
+            const textNodes: { node: Node; text: string }[] = [];
+            const walker = document.createTreeWalker(
+              tempDiv,
+              NodeFilter.SHOW_TEXT,
+              null
+            );
+
+            let node;
+            while ((node = walker.nextNode())) {
+              const nodeText = node.textContent?.trim();
+              if (nodeText) {
+                textNodes.push({ node, text: nodeText });
+              }
+            }
+
+            // Translate all text nodes
+            for (const { node, text } of textNodes) {
+              const encodedText = encodeURIComponent(text);
+              const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodedText}`;
+
+              try {
+                const response = await fetch(url);
+                if (response.ok) {
+                  const data = await response.json();
+                  if (data && data[0]) {
+                    const translated = data[0].map((item: any) => item[0]).join('');
+                    if (node.textContent) {
+                      node.textContent = translated;
+                    }
+                  }
+                }
+              } catch (err) {
+                console.error('Failed to translate text node:', err);
+              }
+
+              // Small delay to avoid rate limiting
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+
+            return tempDiv.innerHTML;
+          }
+
+          // For plain text, translate directly
+          const encodedText = encodeURIComponent(text);
+          const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodedText}`;
+
+          const response = await fetch(url);
+
+          if (!response.ok) {
+            throw new Error('Translation failed');
+          }
+
+          const data = await response.json();
+
+          if (data && data[0]) {
+            return data[0].map((item: any) => item[0]).join('');
+          }
+
+          return text;
+        } catch (error) {
+          console.error('Translation error:', error);
+          return text;
+        }
+      };
+
+      const fromLang = isEnToAr ? 'en' : 'ar';
+      const toLang = isEnToAr ? 'ar' : 'en';
+
+      // Translate all fields
+      const [translatedTitle, translatedExcerpt, translatedContent] = await Promise.all([
+        translateText(sourceTitle, fromLang, toLang),
+        translateText(sourceExcerpt, fromLang, toLang),
+        translateText(sourceContent, fromLang, toLang),
+      ]);
+
+      // Update target content based on direction
+      if (isEnToAr) {
+        setBilingualContent({
+          ...bilingualContent,
+          titleAr: translatedTitle,
+          excerptAr: translatedExcerpt,
+          contentAr: translatedContent,
+        });
+      } else {
+        setBilingualContent({
+          ...bilingualContent,
+          titleEn: translatedTitle,
+          excerptEn: translatedExcerpt,
+          contentEn: translatedContent,
+        });
+      }
+
+      const targetLang = isEnToAr ? 'Arabic' : 'English';
+      alert(`Translation to ${targetLang} completed! You can now edit the content if needed.`);
+    } catch (error) {
+      console.error('Translation error:', error);
+      alert('Translation failed. Please try again or fill in manually.');
+    } finally {
+      setTranslating(false);
+    }
   };
 
   const handleSubmit = async (publish: boolean = false) => {
@@ -293,12 +423,59 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
         {/* Tab Content */}
         <div className="flex-1 overflow-y-auto p-6">
           {activeTab === 'content' && (
-            <div className="grid grid-cols-2 gap-6">
-              {/* English Section - Left */}
-              <div className="space-y-6 border-r pr-6">
-                <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-                  English Content
-                </h3>
+            <div className="space-y-6">
+              {/* Translate Button with Direction Selector */}
+              <div className="flex justify-center items-center gap-4">
+                <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => setTranslationDirection('en-to-ar')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      translationDirection === 'en-to-ar'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    EN → AR
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTranslationDirection('ar-to-en')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      translationDirection === 'ar-to-en'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    AR → EN
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleTranslate}
+                  disabled={translating}
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium shadow-lg transition-all"
+                >
+                  {translating ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Translating...
+                    </>
+                  ) : (
+                    <>
+                      <Languages className="w-5 h-5" />
+                      Auto-Translate {translationDirection === 'en-to-ar' ? 'to Arabic' : 'to English'}
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                {/* English Section - Left */}
+                <div className="space-y-6 border-r pr-6">
+                  <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
+                    English Content
+                  </h3>
 
                 <div className="relative">
                   <input
@@ -418,6 +595,7 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
                     dir="rtl"
                   />
                 </div>
+              </div>
               </div>
             </div>
           )}

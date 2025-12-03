@@ -23,7 +23,7 @@ import {
   ImagePlus,
   Loader2,
 } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 type WysiwygEditorProps = {
   content: string;
@@ -64,6 +64,13 @@ export default function WysiwygEditor({
       },
     },
   });
+
+  // Sync editor content when prop changes (for translation feature)
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
