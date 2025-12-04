@@ -15,6 +15,9 @@ type BlogFormV2Props = {
     title: string;
     excerpt: string;
     content: ContentBlock[];
+    titleAr?: string | null;
+    excerptAr?: string | null;
+    contentAr?: ContentBlock[] | null;
     category: string;
     tags: string[];
     coverImage: string | null;
@@ -38,6 +41,13 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
   const [translating, setTranslating] = useState(false);
   const [translationDirection, setTranslationDirection] = useState<'en-to-ar' | 'ar-to-en'>('en-to-ar');
 
+  // Helper function to extract HTML from ContentBlock[]
+  const extractHtmlFromBlocks = (blocks: ContentBlock[] | null | undefined): string => {
+    if (!blocks || blocks.length === 0) return '';
+    const textBlock = blocks.find(block => block.type === 'text');
+    return textBlock && textBlock.type === 'text' ? textBlock.data : '';
+  };
+
   const [formData, setFormData] = useState<BlogFormData>({
     title: initialData?.title || '',
     excerpt: initialData?.excerpt || '',
@@ -57,11 +67,11 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
   // Separate state for bilingual content
   const [bilingualContent, setBilingualContent] = useState({
     titleEn: initialData?.title || '',
-    titleAr: '',
+    titleAr: initialData?.titleAr || '',
     excerptEn: initialData?.excerpt || '',
-    excerptAr: '',
-    contentEn: '',
-    contentAr: '',
+    excerptAr: initialData?.excerptAr || '',
+    contentEn: extractHtmlFromBlocks(initialData?.content),
+    contentAr: extractHtmlFromBlocks(initialData?.contentAr),
   });
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

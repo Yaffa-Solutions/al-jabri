@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { db } from "@/db"
 import { blogs } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import BlogForm from "../../blog-form"
+import BlogFormV2 from "../../blog-form-v2"
 
 export default async function EditBlogPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
@@ -22,27 +22,23 @@ export default async function EditBlogPage({ params }: { params: Promise<{ id: s
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Edit Blog Post</h1>
-        <p className="text-gray-600 mt-2">Update your blog article</p>
-      </div>
-
-      <BlogForm
+    <div className="p-6">
+      <BlogFormV2
         authorId={session.user.id}
         initialData={{
           id: blog.id,
           title: blog.title,
-          titleAr: blog.titleAr,
           excerpt: blog.excerpt,
-          excerptAr: blog.excerptAr,
           content: blog.content,
+          titleAr: blog.titleAr,
+          excerptAr: blog.excerptAr,
           contentAr: blog.contentAr,
           category: blog.category,
-          categoryAr: blog.categoryAr,
+          tags: blog.tags || [],
           coverImage: blog.coverImage,
-          readTime: blog.readTime,
+          readTime: blog.readTime || '5 min read',
           published: blog.published,
+          languageCode: (blog.languageCode || 'en') as 'en' | 'ar',
         }}
       />
     </div>
