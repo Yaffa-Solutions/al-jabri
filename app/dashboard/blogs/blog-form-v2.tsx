@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, Upload, X, Plus, Eye, Languages } from 'lucide-react';
+import { Loader2, Upload, X, Plus, Eye, Languages, Calendar, User, Clock } from 'lucide-react';
 import { createId } from '@paralleldrive/cuid2';
 import { useI18n } from '@/lib/i18n-context';
 import type { BlogFormData, ContentBlock } from '@/types/blog';
 import WysiwygEditor from '@/components/wysiwyg-editor';
+import Image from 'next/image';
 
 type BlogFormV2Props = {
   authorId: string;
@@ -40,6 +41,8 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
   const [tagInput, setTagInput] = useState('');
   const [translating, setTranslating] = useState(false);
   const [translationDirection, setTranslationDirection] = useState<'en-to-ar' | 'ar-to-en'>('en-to-ar');
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewLocale, setPreviewLocale] = useState<'en' | 'ar'>('en');
 
   // Helper function to extract HTML from ContentBlock[]
   const extractHtmlFromBlocks = (blocks: ContentBlock[] | null | undefined): string => {
@@ -312,14 +315,11 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => {
-                // TODO: Implement preview functionality
-                console.log('Preview clicked');
-              }}
+              onClick={() => setShowPreview(true)}
               className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 flex items-center gap-2 font-medium transition-colors"
             >
               <Eye className="w-4 h-4" />
-              Preview
+              {t('dashboard.blogs.preview')}
             </button>
             <button
               type="button"
@@ -328,7 +328,7 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 flex items-center gap-2 font-medium transition-colors"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              Draft
+              {t('dashboard.blogs.draft')}
             </button>
             <button
               type="button"
@@ -337,7 +337,7 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2 font-medium transition-colors"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              Publish
+              {t('dashboard.blogs.publish')}
             </button>
           </div>
         </div>
@@ -345,7 +345,7 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
 
       <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Cover Image
+          {t('blog.editor.coverImage')}
         </label>
         {formData.coverImage ? (
           <div className="relative group">
@@ -370,10 +370,10 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
               <>
                 <Upload className="w-6 h-2 text-gray-400 mb-2" />
                 <span className="text-sm text-gray-600 font-medium">
-                  Click to upload cover image
+                  {t('blog.editor.clickToUpload')}
                 </span>
                 <span className="text-xs text-gray-500 mt-1">
-                  PNG, JPG, GIF up to 10MB
+                  {t('blog.editor.fileFormat')}
                 </span>
               </>
             )}
@@ -469,12 +469,14 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
                   {translating ? (
                     <>
                       <Loader2 className="w-5 h-5 animate-spin" />
-                      Translating...
+                      {t('blog.editor.translating')}
                     </>
                   ) : (
                     <>
                       <Languages className="w-5 h-5" />
-                      Auto-Translate {translationDirection === 'en-to-ar' ? 'to Arabic' : 'to English'}
+                      {translationDirection === 'en-to-ar'
+                        ? t('blog.editor.autoTranslateToArabic')
+                        : t('blog.editor.autoTranslateToEnglish')}
                     </>
                   )}
                 </button>
@@ -732,6 +734,155 @@ export default function BlogFormV2({ authorId, initialData }: BlogFormV2Props) {
           )}
         </div>
       </div>
+
+      {/* Preview Modal */}
+      {showPreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
+              <div className="flex items-center gap-4">
+                <h2 className="text-xl font-semibold text-gray-900">Blog Preview</h2>
+                {/* Language Toggle */}
+                <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewLocale('en')}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      previewLocale === 'en'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewLocale('ar')}
+                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                      previewLocale === 'ar'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    العربية
+                  </button>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPreview(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-8 bg-[#FDFBF7]">
+              <article className="max-w-4xl mx-auto">
+                {/* Preview Banner */}
+                <div className="bg-amber-100 border border-amber-200 rounded-lg p-3 mb-8">
+                  <p className="text-amber-800 text-sm font-medium text-center">
+                    ⚠️ This is a preview - Blog is not published yet
+                  </p>
+                </div>
+
+                {/* Category Badge */}
+                {formData.category && (
+                  <div className="mb-4">
+                    <span className="inline-block px-3 py-1 bg-[#B99B75]/10 text-[#B99B75] text-sm font-medium rounded-full">
+                      {formData.category}
+                    </span>
+                  </div>
+                )}
+
+                {/* Title */}
+                <h1
+                  className="text-3xl md:text-5xl font-bold text-[#324557] mb-6 leading-tight"
+                  dir={previewLocale === 'ar' ? 'rtl' : 'ltr'}
+                >
+                  {previewLocale === 'en' ? bilingualContent.titleEn : bilingualContent.titleAr}
+                </h1>
+
+                {/* Meta Data */}
+                <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm border-b border-[#E3D6C7] pb-6 mb-8">
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-[#B99B75]" />
+                    <span className="font-medium text-[#324557]">Author</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-[#B99B75]" />
+                    <span>
+                      {new Date().toLocaleDateString(previewLocale === 'ar' ? 'ar-SA' : 'en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  {formData.readTime && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-[#B99B75]" />
+                      <span>{formData.readTime}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Cover Image */}
+                {formData.coverImage && (
+                  <div className="rounded-2xl overflow-hidden mb-10 shadow-lg relative h-[400px] w-full">
+                    <Image
+                      src={formData.coverImage}
+                      alt={previewLocale === 'en' ? bilingualContent.titleEn : bilingualContent.titleAr}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                )}
+
+                {/* Excerpt */}
+                {(previewLocale === 'en' ? bilingualContent.excerptEn : bilingualContent.excerptAr) && (
+                  <div className="mb-10 p-6 bg-white border-l-4 border-[#B99B75] rounded-r-lg shadow-sm">
+                    <p
+                      className="text-xl text-gray-700 leading-relaxed font-medium italic"
+                      dir={previewLocale === 'ar' ? 'rtl' : 'ltr'}
+                    >
+                      {previewLocale === 'en' ? bilingualContent.excerptEn : bilingualContent.excerptAr}
+                    </p>
+                  </div>
+                )}
+
+                {/* Main Content */}
+                <div
+                  className="prose prose-lg max-w-none prose-headings:font-serif prose-headings:text-[#324557] prose-p:text-gray-600 prose-a:text-[#B99B75] prose-img:rounded-xl bg-white p-8 rounded-lg shadow-sm"
+                  dir={previewLocale === 'ar' ? 'rtl' : 'ltr'}
+                  dangerouslySetInnerHTML={{
+                    __html: previewLocale === 'en' ? bilingualContent.contentEn : bilingualContent.contentAr
+                  }}
+                />
+
+                {/* Tags */}
+                {formData.tags.length > 0 && (
+                  <div className="mt-8 pt-8 border-t border-[#E3D6C7]">
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </article>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
