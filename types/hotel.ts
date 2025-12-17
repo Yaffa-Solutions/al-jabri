@@ -172,6 +172,30 @@ export type Hotel = {
   roomCount?: number
 }
 
+// Room add-on options
+export type RoomAddOn = {
+  id: string
+  type: 'breakfast' | 'daily_cleaning' | 'room_service' | 'laundry' | 'airport_transfer' | 'spa_access' | 'gym_access' | 'late_checkout' | 'early_checkin' | 'extra_bed' | 'mini_bar' | 'wifi_premium'
+  included: boolean // Whether included in base price
+  price?: number // Additional price if not included
+  priceCurrency?: string
+  description?: string
+  descriptionAr?: string
+}
+
+// Room booking conditions
+export type RoomBookingConditions = {
+  cancellationPolicy?: string
+  cancellationPolicyAr?: string
+  minimumStay?: number
+  maximumStay?: number
+  checkInTime?: string
+  checkOutTime?: string
+  ageRestriction?: number
+  smokingAllowed?: boolean
+  petsAllowed?: boolean
+}
+
 // Room type
 export type Room = {
   id: string
@@ -190,6 +214,8 @@ export type Room = {
   size?: number
   bedType?: string
   bedTypeAr?: string
+  addOns?: RoomAddOn[]
+  bookingConditions?: RoomBookingConditions
 }
 
 // Facility labels for UI

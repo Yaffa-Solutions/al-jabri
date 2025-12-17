@@ -113,6 +113,17 @@ export const hotels = pgTable("hotels", {
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 })
 
+// Room add-on options structure
+export type RoomAddOn = {
+  id: string
+  type: 'breakfast' | 'daily_cleaning' | 'room_service' | 'laundry' | 'airport_transfer' | 'spa_access' | 'gym_access' | 'late_checkout' | 'early_checkin' | 'extra_bed' | 'mini_bar' | 'wifi_premium'
+  included: boolean // Whether included in base price
+  price?: number // Additional price if not included
+  priceCurrency?: string
+  description?: string
+  descriptionAr?: string
+}
+
 // Rooms table
 export const rooms = pgTable("rooms", {
   id: varchar("id", { length: 128 })
@@ -135,6 +146,20 @@ export const rooms = pgTable("rooms", {
   size: integer("size"), // Room size in sqm
   bedType: varchar("bed_type", { length: 100 }),
   bedTypeAr: varchar("bed_type_ar", { length: 100 }),
+  // Add-on options (breakfast, daily cleaning, etc.)
+  addOns: json("add_ons").$type<RoomAddOn[]>().default([]),
+  // Booking conditions (cancellation policy, minimum stay, etc.)
+  bookingConditions: json("booking_conditions").$type<{
+    cancellationPolicy?: string
+    cancellationPolicyAr?: string
+    minimumStay?: number
+    maximumStay?: number
+    checkInTime?: string
+    checkOutTime?: string
+    ageRestriction?: number
+    smokingAllowed?: boolean
+    petsAllowed?: boolean
+  }>().default({}),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 })

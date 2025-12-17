@@ -9,7 +9,8 @@ import {
   CalendarDays,
   FileText,
   Activity,
-  LogOut
+  LogOut,
+  Bed
 } from 'lucide-react'
 import LocaleSwitcher from './locale-switcher'
 
@@ -26,6 +27,7 @@ export default function DashboardSidebar({ userName, userRole, isSuperAdmin }: D
     { name: t('dashboard.nav.dashboard'), href: '/dashboard', icon: LayoutDashboard, show: true },
     { name: t('dashboard.nav.bookings'), href: '/dashboard/bookings', icon: CalendarDays, show: true },
     { name: t('dashboard.nav.hotels'), href: '/dashboard/hotels', icon: Hotel, show: true },
+    { name: t('dashboard.nav.rooms'), href: '/dashboard/rooms', icon: Bed, show: true },
     { name: t('dashboard.nav.blogs'), href: '/dashboard/blogs', icon: FileText, show: true },
     { name: t('dashboard.nav.users'), href: '/dashboard/users', icon: Users, show: isSuperAdmin },
     { name: t('dashboard.nav.activities'), href: '/dashboard/activities', icon: Activity, show: isSuperAdmin },
