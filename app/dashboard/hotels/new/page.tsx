@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import HotelForm from "../hotel-form"
+import HotelFormWizard from "../hotel-form-wizard"
 
 export default async function NewHotelPage() {
   const session = await auth()
@@ -11,7 +11,7 @@ export default async function NewHotelPage() {
 
   return (
     <div className="p-6">
-      <HotelForm />
+      <HotelFormWizard />
     </div>
   )
 }

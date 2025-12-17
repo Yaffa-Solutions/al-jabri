@@ -3,7 +3,7 @@ import { redirect } from "next/navigation"
 import { db } from "@/db"
 import { hotels } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import HotelForm from "../../hotel-form"
+import HotelFormWizard from "../../hotel-form-wizard"
 import type { HotelFacility, HotelPolicy, MediaItem, AvailabilityStatus } from "@/types/hotel"
 
 export default async function EditHotelPage({ params }: { params: Promise<{ id: string }> }) {
@@ -24,7 +24,7 @@ export default async function EditHotelPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="p-6">
-      <HotelForm
+      <HotelFormWizard
         initialData={{
           id: hotel.id,
           name: hotel.name,

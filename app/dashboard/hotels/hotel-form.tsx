@@ -270,14 +270,18 @@ export default function HotelForm({ initialData }: HotelFormProps) {
   const handleTranslate = async () => {
     const isEnToAr = translationDirection === 'en-to-ar';
     
+    // Check if at least one field has content (don't require all fields)
+    const hasEnglishContent = !!(formData.name || formData.location || formData.description || formData.address || formData.city);
+    const hasArabicContent = !!(formData.nameAr || formData.locationAr || formData.descriptionAr || formData.addressAr || formData.cityAr);
+    
     if (isEnToAr) {
-      if (!formData.name || !formData.location || !formData.description) {
-        alert('Please fill in English content first before translating');
+      if (!hasEnglishContent) {
+        alert('Please fill in at least one English field before translating');
         return;
       }
     } else {
-      if (!formData.nameAr || !formData.locationAr || !formData.descriptionAr) {
-        alert('يرجى ملء المحتوى العربي أولاً قبل الترجمة');
+      if (!hasArabicContent) {
+        alert('يرجى ملء حقل واحد على الأقل بالعربية قبل الترجمة');
         return;
       }
     }
@@ -285,7 +289,7 @@ export default function HotelForm({ initialData }: HotelFormProps) {
     setTranslating(true);
     try {
       const translateText = async (text: string, fromLang: string, toLang: string): Promise<string> => {
-        if (!text.trim()) return text;
+        if (!text || !text.trim()) return text || '';
 
         const encodedText = encodeURIComponent(text);
         const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${fromLang}&tl=${toLang}&dt=t&q=${encodedText}`;
@@ -304,38 +308,40 @@ export default function HotelForm({ initialData }: HotelFormProps) {
       const toLang = isEnToAr ? 'ar' : 'en';
 
       if (isEnToAr) {
-        const [nameAr, locationAr, descriptionAr, addressAr, cityAr] = await Promise.all([
-          translateText(formData.name, fromLang, toLang),
-          translateText(formData.location, fromLang, toLang),
-          translateText(formData.description, fromLang, toLang),
-          formData.address ? translateText(formData.address, fromLang, toLang) : '',
-          formData.city ? translateText(formData.city, fromLang, toLang) : '',
+        // Translate only fields that have content
+        const translations = await Promise.all([
+          formData.name ? translateText(formData.name, fromLang, toLang) : Promise.resolve(formData.nameAr || ''),
+          formData.location ? translateText(formData.location, fromLang, toLang) : Promise.resolve(formData.locationAr || ''),
+          formData.description ? translateText(formData.description, fromLang, toLang) : Promise.resolve(formData.descriptionAr || ''),
+          formData.address ? translateText(formData.address, fromLang, toLang) : Promise.resolve(formData.addressAr || ''),
+          formData.city ? translateText(formData.city, fromLang, toLang) : Promise.resolve(formData.cityAr || ''),
         ]);
 
         setFormData(prev => ({
           ...prev,
-          nameAr,
-          locationAr,
-          descriptionAr,
-          addressAr,
-          cityAr,
+          nameAr: translations[0] || prev.nameAr,
+          locationAr: translations[1] || prev.locationAr,
+          descriptionAr: translations[2] || prev.descriptionAr,
+          addressAr: translations[3] || prev.addressAr,
+          cityAr: translations[4] || prev.cityAr,
         }));
       } else {
-        const [name, location, description, address, city] = await Promise.all([
-          translateText(formData.nameAr, fromLang, toLang),
-          translateText(formData.locationAr, fromLang, toLang),
-          translateText(formData.descriptionAr, fromLang, toLang),
-          formData.addressAr ? translateText(formData.addressAr, fromLang, toLang) : '',
-          formData.cityAr ? translateText(formData.cityAr, fromLang, toLang) : '',
+        // Translate from AR to EN
+        const translations = await Promise.all([
+          formData.nameAr ? translateText(formData.nameAr, fromLang, toLang) : Promise.resolve(formData.name || ''),
+          formData.locationAr ? translateText(formData.locationAr, fromLang, toLang) : Promise.resolve(formData.location || ''),
+          formData.descriptionAr ? translateText(formData.descriptionAr, fromLang, toLang) : Promise.resolve(formData.description || ''),
+          formData.addressAr ? translateText(formData.addressAr, fromLang, toLang) : Promise.resolve(formData.address || ''),
+          formData.cityAr ? translateText(formData.cityAr, fromLang, toLang) : Promise.resolve(formData.city || ''),
         ]);
 
         setFormData(prev => ({
           ...prev,
-          name,
-          location,
-          description,
-          address,
-          city,
+          name: translations[0] || prev.name,
+          location: translations[1] || prev.location,
+          description: translations[2] || prev.description,
+          address: translations[3] || prev.address,
+          city: translations[4] || prev.city,
         }));
       }
 

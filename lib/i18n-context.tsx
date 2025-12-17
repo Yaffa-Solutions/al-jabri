@@ -474,6 +474,14 @@ const translationsEn: Record<string, string> = {
   'dashboard.hotels.confirmUnpublish': 'Are you sure you want to unpublish this hotel?',
   'dashboard.hotels.deleteFailed': 'Failed to delete hotel',
   'dashboard.hotels.updateFailed': 'Failed to update hotel',
+  'dashboard.hotels.step.basic': 'Basic Information',
+  'dashboard.hotels.step.details': 'Property Details',
+  'dashboard.hotels.step.facilities': 'Facilities & Amenities',
+  'dashboard.hotels.step.policies': 'Policies & Rules',
+  'dashboard.hotels.step.gallery': 'Photos & Media',
+  'dashboard.hotels.step.review': 'Review & Publish',
+  'dashboard.hotels.previous': 'Previous',
+  'dashboard.hotels.next': 'Next',
 
   // Users Management
   'dashboard.users.title': 'User Management',
@@ -919,6 +927,14 @@ const translationsAr: Record<string, string> = {
   'dashboard.hotels.confirmUnpublish': 'هل أنت متأكد من إلغاء نشر هذا الفندق؟',
   'dashboard.hotels.deleteFailed': 'فشل حذف الفندق',
   'dashboard.hotels.updateFailed': 'فشل تحديث الفندق',
+  'dashboard.hotels.step.basic': 'المعلومات الأساسية',
+  'dashboard.hotels.step.details': 'تفاصيل العقار',
+  'dashboard.hotels.step.facilities': 'المرافق والخدمات',
+  'dashboard.hotels.step.policies': 'السياسات والقواعد',
+  'dashboard.hotels.step.gallery': 'الصور والوسائط',
+  'dashboard.hotels.step.review': 'المراجعة والنشر',
+  'dashboard.hotels.previous': 'السابق',
+  'dashboard.hotels.next': 'التالي',
 
   // Users Management
   'dashboard.users.title': 'إدارة المستخدمين',
